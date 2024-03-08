@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="groupStyleSplashScreen">
+        <item name="android:background">@drawable/rectangle_bg_white_a700</item>
+    </style>
+
+    <style name="groupStyleOnboardingScreen">
+        <item name="android:background">@drawable/rectangle_bg_white_a700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold24">
+        <item name="android:textSize">@dimen/_24pxh</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansregular14">
+        <item name="android:textSize">@dimen/_14pxh</item>
+        <item name="android:textColor">@color/gray_600</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="btnSolidRounded_1">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/light_green_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+        <item name="android:background">@drawable/rectangle_bg_light_green_500_radius_tl_24_tr_24_bl_24_br_4</item>
+    </style>
+
+    <style name="btnRoundedOutline">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/light_green_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+        <item name="android:background">@drawable/rectangle_border_green_50_radius_24</item>
+    </style>
+</resources>

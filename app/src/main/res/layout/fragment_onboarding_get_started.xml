@@ -1,0 +1,104 @@
+<LinearLayout style="@style/groupStyleOnboardingScreen"
+    android:gravity="center_horizontal"
+    android:id="@+id/linear12Onboarding"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/imageIllustration"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="@dimen/_247pxh"
+        android:layout_marginEnd="@dimen/_24pxh"
+        android:layout_marginStart="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_83pxv"
+        android:layout_width="@dimen/_327pxh"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_illustration"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_illustration" />
+
+    <TextView
+        style="@style/txtEudoxusSansbold24"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:id="@+id/txtLanguage"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_24pxh"
+        android:layout_marginStart="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_42pxv"
+        android:layout_width="match_parent"
+        android:lineSpacingExtra="@dimen/_7pxh"
+        android:singleLine="true"
+        android:text="@string/msg_get_started_wi"
+        tools:text="@string/msg_get_started_wi" />
+
+    <TextView
+        style="@style/txtEudoxusSansregular14"
+        android:gravity="center_horizontal"
+        android:id="@+id/txtAplacethatpr"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_24pxh"
+        android:layout_marginStart="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_28pxv"
+        android:layout_width="match_parent"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:text="@string/msg_a_place_that_pr"
+        tools:text="@string/msg_a_place_that_pr" />
+
+    <ImageView
+        android:id="@+id/imageTelevision"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="@dimen/_8pxh"
+        android:layout_marginEnd="@dimen/_24pxh"
+        android:layout_marginStart="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_36pxv"
+        android:layout_width="@dimen/_40pxh"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_television"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_television" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/btnSolidRounded_1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:id="@+id/btnGetStarted"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_24pxh"
+        android:layout_marginStart="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_40pxv"
+        android:layout_width="match_parent"
+        android:lineSpacingExtra="@dimen/_5pxh"
+        android:paddingBottom="@dimen/_21pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_21pxv"
+        android:singleLine="true"
+        android:text="@string/lbl_get_started"
+        android:textAllCaps="false"
+        tools:text="@string/lbl_get_started" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/btnRoundedOutline"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:id="@+id/btnSignIn"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20pxv"
+        android:layout_marginEnd="@dimen/_24pxh"
+        android:layout_marginStart="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_16pxv"
+        android:layout_width="match_parent"
+        android:lineSpacingExtra="@dimen/_5pxh"
+        android:paddingBottom="@dimen/_21pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingStart="@dimen/_30pxh"
+        android:paddingTop="@dimen/_21pxv"
+        android:singleLine="true"
+        android:text="@string/lbl_sign_in"
+        android:textAllCaps="false"
+        tools:text="@string/lbl_sign_in" />
+</LinearLayout>

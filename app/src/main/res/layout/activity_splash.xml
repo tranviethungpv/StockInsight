@@ -1,0 +1,32 @@
+<LinearLayout style="@style/groupStyleSplashScreen"
+    android:gravity="center_horizontal"
+    android:id="@+id/linear10SplashScre"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/imageLogo"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="@dimen/_48pxh"
+        android:layout_marginEnd="@dimen/_67pxh"
+        android:layout_marginStart="@dimen/_68pxh"
+        android:layout_marginTop="@dimen/_236pxv"
+        android:layout_width="@dimen/_240pxh"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_logo"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_logo" />
+
+    <ImageView
+        android:gravity="start"
+        android:id="@+id/imageChart"
+        android:layout_height="@dimen/_404pxv"
+        android:layout_marginTop="@dimen/_80pxv"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_chart"
+        tools:ignore="ContentDescription" />
+</LinearLayout>

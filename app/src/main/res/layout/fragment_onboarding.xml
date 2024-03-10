@@ -1,6 +1,6 @@
 <LinearLayout style="@style/groupStyleBackground"
     android:gravity="center_horizontal"
-    android:id="@+id/linear12Onboarding"
+    android:id="@+id/linear11Onboarding"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/imageIllustration"
+        android:id="@+id/imageIllustation"
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/_247pxh"
         android:layout_marginEnd="@dimen/_24pxh"
@@ -16,24 +16,24 @@
         android:layout_marginTop="@dimen/_83pxv"
         android:layout_width="@dimen/_327pxh"
         android:scaleType="fitXY"
-        android:src="@drawable/img_illustration"
+        android:src="@drawable/img_illustation"
         tools:ignore="ContentDescription"
-        tools:src="@drawable/img_illustration" />
+        tools:src="@drawable/img_illustation" />
 
     <TextView
         style="@style/txtEudoxusSansbold24"
         android:ellipsize="end"
         android:gravity="center_horizontal"
-        android:id="@+id/txtLanguage"
+        android:id="@+id/txtBuyTradeTop"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_24pxh"
         android:layout_marginStart="@dimen/_24pxh"
-        android:layout_marginTop="@dimen/_42pxv"
+        android:layout_marginTop="@dimen/_44pxv"
         android:layout_width="match_parent"
         android:lineSpacingExtra="@dimen/_7pxh"
         android:singleLine="true"
-        android:text="@string/msg_get_started_wi"
-        tools:text="@string/msg_get_started_wi" />
+        android:text="@string/msg_buy_trade_top"
+        tools:text="@string/msg_buy_trade_top" />
 
     <TextView
         style="@style/txtEudoxusSansregular14"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_24pxh"
         android:layout_marginStart="@dimen/_24pxh"
-        android:layout_marginTop="@dimen/_28pxv"
+        android:layout_marginTop="@dimen/_25pxv"
         android:layout_width="match_parent"
         android:lineSpacingExtra="@dimen/_10pxh"
         android:text="@string/msg_a_place_that_pr"
@@ -65,8 +65,9 @@
         style="@style/btnSolidRounded_1"
         android:ellipsize="end"
         android:gravity="center"
-        android:id="@+id/btnGetStarted"
+        android:id="@+id/btnNext"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20pxv"
         android:layout_marginEnd="@dimen/_24pxh"
         android:layout_marginStart="@dimen/_24pxh"
         android:layout_marginTop="@dimen/_40pxv"
@@ -77,28 +78,7 @@
         android:paddingStart="@dimen/_30pxh"
         android:paddingTop="@dimen/_21pxv"
         android:singleLine="true"
-        android:text="@string/lbl_get_started"
+        android:text="@string/lbl_next"
         android:textAllCaps="false"
-        tools:text="@string/lbl_get_started" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/btnRoundedOutline"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:id="@+id/btnSignIn"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_20pxv"
-        android:layout_marginEnd="@dimen/_24pxh"
-        android:layout_marginStart="@dimen/_24pxh"
-        android:layout_marginTop="@dimen/_16pxv"
-        android:layout_width="match_parent"
-        android:lineSpacingExtra="@dimen/_5pxh"
-        android:paddingBottom="@dimen/_21pxv"
-        android:paddingEnd="@dimen/_30pxh"
-        android:paddingStart="@dimen/_30pxh"
-        android:paddingTop="@dimen/_21pxv"
-        android:singleLine="true"
-        android:text="@string/lbl_sign_in"
-        android:textAllCaps="false"
-        tools:text="@string/lbl_sign_in" />
+        tools:text="@string/lbl_next" />
 </LinearLayout>

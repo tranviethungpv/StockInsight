@@ -10,8 +10,8 @@ class MainActivity : AppCompatActivity() {
 
         // display onboarding fragment
 
-        val onboardingGetStartedFragment = OnboardingGetStartedFragment()
+        val onboardingFragment = OnboardingFragment()
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, onboardingGetStartedFragment).commit()
+        transaction.replace(R.id.container, onboardingFragment).commit()
     }
 }

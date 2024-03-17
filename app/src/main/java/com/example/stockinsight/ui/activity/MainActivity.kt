@@ -1,8 +1,12 @@
-package com.example.stockinsight
+package com.example.stockinsight.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.stockinsight.ui.fragment.OnboardingFragment
+import com.example.stockinsight.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

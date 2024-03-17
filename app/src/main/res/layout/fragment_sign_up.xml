@@ -160,6 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
+            android:fontFamily="@font/eudoxus_sans"
             android:layout_marginStart="@dimen/_24pxh"
             android:layout_marginEnd="@dimen/_24pxh"
             android:layout_marginBottom="@dimen/_10pxv"
@@ -183,8 +184,8 @@
         android:layout_marginTop="@dimen/_8pxv"
         android:layout_marginEnd="@dimen/_24pxh">
 
-        <LinearLayout
-            android:id="@+id/linearColumnPassword"
+        <RelativeLayout
+            android:id="@+id/relativeColumnPassword"
             style="@style/etRoundedOutline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -194,13 +195,13 @@
 
             <EditText
                 android:background="@drawable/rectangle_border_white_a700_19_radius_24"
-                android:drawableEnd="@drawable/img_eye"
                 android:drawablePadding="@dimen/_30pxh"
                 android:ellipsize="end" android:hint="@string/lbl_password"
                 android:id="@+id/etInputsPassword"
                 android:inputType="textPassword"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_gravity="center_vertical|start"
                 android:lineSpacingExtra="@dimen/_5pxh"
                 android:paddingBottom="@dimen/_20pxv"
                 android:paddingEnd="@dimen/_25pxh"
@@ -208,7 +209,16 @@
                 android:paddingTop="@dimen/_22pxv" android:singleLine="true"
                 android:textColorHint="@color/gray_600"
                 tools:ignore="Autofill"/>
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnShowPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_30pxv"
+                android:layout_alignEnd="@id/etInputsPassword"
+                android:layout_centerVertical="true"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
 
         <TextView
             android:visibility="gone"
@@ -246,11 +256,10 @@
             android:layout_width="@dimen/_18pxh"
             android:layout_height="@dimen/_18pxh"
             android:layout_marginBottom="@dimen/_1pxv"
-            android:background="@drawable/rectangle_bg_light_green_500_radius_tl_24_tr_24_bl_4_br_4"
+            android:background="@drawable/rectangle_bg_white_radius_tl_24_tr_24_bl_4_br_4"
             android:paddingHorizontal="@dimen/_5pxh"
             android:paddingVertical="@dimen/_5pxv"
             android:scaleType="fitCenter"
-            android:src="@drawable/img_check"
             tools:ignore="ContentDescription" />
 
         <TextView

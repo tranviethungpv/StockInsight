@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/groupStyleBackgroundDialog"
+    android:layout_margin="@dimen/_16pxh"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgStatus"
+        android:layout_width="@dimen/_70pxh"
+        android:layout_height="@dimen/_70pxh"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/_16pxh"
+        android:layout_marginTop="@dimen/_16pxh"
+        android:layout_marginBottom="@dimen/_16pxh"
+        android:layout_marginEnd="@dimen/_16pxh"
+        android:contentDescription="@drawable/img_error"/>
+    <!--        android:src="@drawable/img_warning"-->
+
+    <TextView
+        style="@style/txtEudoxusSansregular14"
+        android:gravity="center_horizontal"
+        android:id="@+id/textMessage"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/_16pxh"
+        android:layout_marginStart="@dimen/_16pxh"
+        android:layout_marginBottom="@dimen/_16pxh"
+        android:layout_width="wrap_content"
+        android:text="@string/msg_error" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOk"
+        style="@style/btnSolidRounded_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingStart="@dimen/_15pxv"
+        android:paddingTop="@dimen/_5pxv"
+        android:paddingEnd="@dimen/_15pxh"
+        android:paddingBottom="@dimen/_5pxv"
+        android:singleLine="true"
+        android:text="@string/ok"
+        android:layout_marginBottom="@dimen/_16pxh"
+        android:textAllCaps="false" />
+
+</LinearLayout>

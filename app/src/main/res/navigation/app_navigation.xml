@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/onboardingFragment">
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.example.stockinsight.ui.fragment.OnboardingFragment"
+        android:label="OnboardingFragment" >
+        <action
+            android:id="@+id/action_onboardingFragment_to_onboardingGetStartedFragment"
+            app:destination="@id/onboardingGetStartedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingGetStartedFragment"
+        android:name="com.example.stockinsight.ui.fragment.OnboardingGetStartedFragment"
+        android:label="OnboardingGetStartedFragment" >
+        <action
+            android:id="@+id/action_onboardingGetStartedFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.stockinsight.ui.fragment.signup.SignUpFragment"
+        android:label="SignUpFragment" />
+</navigation>

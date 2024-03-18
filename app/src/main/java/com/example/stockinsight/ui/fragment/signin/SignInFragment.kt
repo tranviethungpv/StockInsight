@@ -1,37 +1,36 @@
-package com.example.stockinsight.ui.fragment.signup
+package com.example.stockinsight.ui.fragment.signin
 
 import android.os.Bundle
 import android.text.InputType
-import android.view.View
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.stockinsight.ui.fragment.OnboardingGetStartedFragment
 import com.example.stockinsight.R
-import com.example.stockinsight.data.model.User
-import com.example.stockinsight.databinding.FragmentSignUpBinding
-import com.example.stockinsight.ui.fragment.signin.SignInFragment
+import com.example.stockinsight.databinding.FragmentSignInBinding
+import com.example.stockinsight.ui.fragment.OnboardingGetStartedFragment
+import com.example.stockinsight.ui.fragment.signup.SignUpFragment
 import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.isValidEmail
-import dagger.hilt.android.AndroidEntryPoint
 import com.example.stockinsight.utils.showDialog
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment() {
-    private var _binding: FragmentSignUpBinding? = null
+class SignInFragment : Fragment() {
+    private var _binding: FragmentSignInBinding? = null
+    private val viewModel: SignInViewModel by viewModels()
     private val binding get() = _binding!!
-    private val viewModel: SignUpViewModel by viewModels()
-    private var isChecked = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        _binding = FragmentSignInBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,12 +38,6 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            etInputsFullName.setOnFocusChangeListener { _, hasFocus ->
-                onFocusChange(
-                    hasFocus, linearColumnFullName, txtTitleFullName, etInputsFullName, "Full Name"
-                )
-            }
-
             etInputsEmail.setOnFocusChangeListener { _, hasFocus ->
                 onFocusChange(hasFocus, linearColumnEmail, txtTitleEmail, etInputsEmail, "Email")
             }
@@ -74,31 +67,21 @@ class SignUpFragment : Fragment() {
 
             btnArrowLeft.setOnClickListener {
                 // navigate to previous fragment
-                findNavController().navigate(R.id.action_signUpFragment_to_onboardingGetStartedFragment)
+                findNavController().navigate(R.id.action_signInFragment_to_onboardingGetStartedFragment)
             }
 
             txtConfirmation.setOnClickListener {
                 // navigate to next fragment
-                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
-            }
-
-            btnCheck.setOnClickListener {
-                isChecked = !isChecked
-                if (isChecked) {
-                    btnCheck.setBackgroundResource(R.drawable.rectangle_bg_light_green_500_radius_tl_24_tr_24_bl_4_br_4)
-                    btnCheck.setImageResource(R.drawable.img_check)
-                } else {
-                    btnCheck.setBackgroundResource(R.drawable.rectangle_bg_white_radius_tl_24_tr_24_bl_4_br_4)
-                    btnCheck.setImageResource(0)
-                }
+                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
             }
 
             observer()
 
             btnStart.setOnClickListener {
                 if (validation()) {
-                    viewModel.registerUser(
-                        binding.etInputsPassword.text.toString(), getUserObject()
+                    viewModel.signInUser(
+                        binding.etInputsEmail.text.toString(),
+                        binding.etInputsPassword.text.toString(),
                     )
                 }
             }
@@ -130,7 +113,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun observer() {
-        viewModel.register.observe(viewLifecycleOwner) { state ->
+        viewModel.signIn.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     binding.btnStart.text = getString(R.string.please_wait)
@@ -143,38 +126,15 @@ class SignUpFragment : Fragment() {
 
                 is UiState.Success -> {
                     binding.btnStart.text = getString(R.string.lbl_start)
-                    showDialog("Registration Successful", "success", requireContext())
+                    showDialog("Sign In Successful", "success", requireContext())
 //                    findNavController().navigate(R.id.action_registerFragment_to_home_navigation)
                 }
             }
         }
     }
 
-    private fun getUserObject(): User {
-        return User(
-            id = "",
-            username = binding.etInputsFullName.text.toString(),
-            male = null,
-            dateOfBirth = null,
-            address = null,
-            phoneNumber = null,
-            email = binding.etInputsEmail.text.toString(),
-            profileImageUrl = null,
-            isVerified = false,
-            provider = null,
-            providerId = null,
-            token = null
-        )
-    }
-
     private fun validation(): Boolean {
         var isValid = true
-
-        if (binding.etInputsFullName.text.isNullOrEmpty()) {
-            isValid = false
-            //binding.etInputsFullName.setBackgroundResource(R.drawable.rectangle_border_light_red_radius_24)
-            showDialog("Full Name is required", "error", requireContext())
-        }
 
         if (binding.etInputsEmail.text.isNullOrEmpty()) {
             isValid = false
@@ -197,11 +157,6 @@ class SignUpFragment : Fragment() {
                 //binding.etInputsPassword.setBackgroundResource(R.drawable.rectangle_border_light_red_radius_24)
                 showDialog("Password must be at least 8 characters", "error", requireContext())
             }
-        }
-
-        if (!isChecked) {
-            isValid = false
-            showDialog("Please accept the terms and conditions", "warning", requireContext())
         }
         return isValid
     }

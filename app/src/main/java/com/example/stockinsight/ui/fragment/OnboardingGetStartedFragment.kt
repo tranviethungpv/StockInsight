@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.stockinsight.R
 import com.example.stockinsight.ui.fragment.signup.SignUpFragment
 
@@ -24,10 +25,13 @@ class OnboardingGetStartedFragment : Fragment() {
         val btnGetStarted = view.findViewById<Button>(R.id.btnGetStarted)
         btnGetStarted.setOnClickListener {
             // navigate to next fragment
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, SignUpFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
+            findNavController().navigate(R.id.action_onboardingGetStartedFragment_to_signUpFragment)
+        }
+
+        val btnSignIn = view.findViewById<Button>(R.id.btnSignIn)
+        btnSignIn.setOnClickListener {
+            // navigate to sign in fragment
+            findNavController().navigate(R.id.action_onboardingGetStartedFragment_to_signInFragment)
         }
 
         return view

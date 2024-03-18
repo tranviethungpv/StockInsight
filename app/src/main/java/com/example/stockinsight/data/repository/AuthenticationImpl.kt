@@ -98,4 +98,29 @@ class AuthenticationImpl(
             )
         }
     }
+
+    override fun signInUser(email: String, password: String, result: (UiState<String>) -> Unit) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.invoke(
+                        UiState.Success(
+                            "User signed in successfully"
+                        )
+                    )
+                } else {
+//                    result.invoke(
+//                        UiState.Failure(
+//                            task.exception?.message ?: "Error occurred"
+//                        )
+//                    )
+                }
+            }.addOnFailureListener {
+                result.invoke(
+                    UiState.Failure(
+                        it.localizedMessage ?: "Error occurred"
+                    )
+                )
+            }
+    }
 }

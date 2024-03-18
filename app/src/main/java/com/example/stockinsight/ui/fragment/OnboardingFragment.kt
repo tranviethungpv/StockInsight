@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.stockinsight.R
 
 class OnboardingFragment : Fragment() {
@@ -21,11 +22,7 @@ class OnboardingFragment : Fragment() {
 
         val btnNext = view.findViewById<Button>(R.id.btnNext)
         btnNext.setOnClickListener {
-            // navigate to next fragment
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, OnboardingGetStartedFragment())
-            transaction.addToBackStack(null)
-            transaction.commit()
+            findNavController().navigate(R.id.action_onboardingFragment_to_onboardingGetStartedFragment)
         }
 
         return view

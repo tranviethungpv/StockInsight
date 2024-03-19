@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Home</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="news">News</string>
+    <string name="user">User</string>
+</resources>

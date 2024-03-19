@@ -54,5 +54,5 @@
     <color name="light_green_500_51">#518ee04e</color>
     <color name="white_A700">#ffffff</color>
     <color name="checked">#8ee04e</color>
-    <color name="unchecked">#7f121826</color>
+    <color name="unchecked">#7fffffff</color>
 </resources>

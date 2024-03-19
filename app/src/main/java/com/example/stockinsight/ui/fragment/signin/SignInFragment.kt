@@ -127,7 +127,7 @@ class SignInFragment : Fragment() {
                 is UiState.Success -> {
                     binding.btnStart.text = getString(R.string.lbl_start)
                     showDialog("Sign In Successful", "success", requireContext())
-//                    findNavController().navigate(R.id.action_registerFragment_to_home_navigation)
+                    findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
                 }
             }
         }

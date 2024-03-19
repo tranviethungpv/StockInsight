@@ -365,5 +365,9 @@ to login into Tradebase</string>
     <string name="accept_terms_and_conditions">You have to accept terms and conditions first</string>
     <string name="ok">OK</string>
     <string name="msg_error">An error has occurred</string>
+    <string name="home">Home</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="news">News</string>
+    <string name="user">User</string>
 </resources>
 

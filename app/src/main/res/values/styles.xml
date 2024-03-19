@@ -83,4 +83,8 @@
     <style name="groupStyleBackgroundDialog">
         <item name="android:background">@drawable/rectangle_bg_white_a700_radius_20</item>
     </style>
+
+    <style name="groupStylecornerRadius_1">
+        <item name="android:background">@drawable/rectangle_radius_12</item>
+    </style>
 </resources>

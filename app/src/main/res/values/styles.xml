@@ -87,4 +87,43 @@
     <style name="groupStylecornerRadius_1">
         <item name="android:background">@drawable/rectangle_radius_12</item>
     </style>
+
+    <style name="groupStyleorange_100cornerRadius">
+        <item name="android:background">@drawable/rectangle_bg_orange_100_radius_24</item>
+    </style>
+
+    <style name="txtEudoxusSansbold18">
+        <item name="android:textSize">@dimen/_18pxh</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold14">
+        <item name="android:textSize">@dimen/_14pxh</item>
+        <item name="android:textColor">@color/light_green_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold12">
+        <item name="android:textSize">@dimen/_12pxh</item>
+        <item name="android:textColor">@color/light_green_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold12_1">
+        <item name="android:textSize">@dimen/_12pxh</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold14_1">
+        <item name="android:textSize">@dimen/_14pxh</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
 </resources>

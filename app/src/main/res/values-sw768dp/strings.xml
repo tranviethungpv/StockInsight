@@ -4,4 +4,5 @@
     <string name="watchlist">Watchlist</string>
     <string name="news">News</string>
     <string name="user">User</string>
+    <string name="lbl_username">Username</string>
 </resources>

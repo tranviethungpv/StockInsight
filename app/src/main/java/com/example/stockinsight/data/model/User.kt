@@ -15,4 +15,19 @@ data class User(
     val provider: String?,
     val providerId: String?,
     val token: String?,
-)
+) {
+    constructor(): this(
+        "",
+        "",
+        null,
+        null,
+        "",
+        "",
+        "",
+        null,
+        false,
+        null,
+        null,
+        null,
+    )
+}

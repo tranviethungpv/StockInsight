@@ -203,7 +203,7 @@ let\u2019s make your first investment!</string>
     <string name="lbl_wed">Wed</string>
     <string name="lbl_edit_profile">Edit Profile</string>
     <string name="lbl_stock_you_buy">Stock you buy</string>
-    <string name="lbl_hi_kitsbase">Hi, Kitsbase!</string>
+    <string name="lbl_hi_kitsbase">Hi, </string>
     <string name="lbl_verification">Verification</string>
     <string name="lbl_224_10">224.10</string>
     <string name="lbl_nike_inc">Nike, Inc.</string>
@@ -369,5 +369,6 @@ to login into Tradebase</string>
     <string name="watchlist">Watchlist</string>
     <string name="news">News</string>
     <string name="user">User</string>
+    <string name="lbl_username">Username</string>
 </resources>
 

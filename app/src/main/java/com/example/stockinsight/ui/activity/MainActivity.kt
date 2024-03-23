@@ -61,6 +61,14 @@ class MainActivity : AppCompatActivity() {
                     .setPopEnterAnim(R.anim.slide_in_left)
                     .setPopExitAnim(R.anim.slide_out_right)
                     .build()
+            } else if (selectedOrder == currentOrder) {
+                // If the selected item's order is equal to the current item's order, use the second set of animations
+                NavOptions.Builder()
+                    .setEnterAnim(R.anim.fade_in)
+                    .setExitAnim(R.anim.fade_out)
+                    .setPopEnterAnim(R.anim.fade_in)
+                    .setPopExitAnim(R.anim.fade_out)
+                    .build()
             } else {
                 // Otherwise, use the second set of animations
                 NavOptions.Builder()

@@ -1,4 +1,4 @@
-package com.example.stockinsight.ui.fragment.home
+package com.example.stockinsight.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.stockinsight.R
-import com.example.stockinsight.data.model.Stock
 import com.example.stockinsight.databinding.FragmentHomeBinding
-import com.example.stockinsight.databinding.FragmentSignInBinding
-import com.example.stockinsight.ui.fragment.user.UserViewModel
+import com.example.stockinsight.ui.fragment.home.StockHomePageAdapter
+import com.example.stockinsight.ui.viewmodel.StockHomePageViewModel
+import com.example.stockinsight.ui.viewmodel.UserViewModel
 import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.showDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,12 +24,18 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val userViewModel: UserViewModel by viewModels()
-    private val postViewModel: PostViewModel by viewModels()
+    private val stockHomePageViewModel: StockHomePageViewModel by viewModels()
 
 
     private val recyclerStock: RecyclerView by lazy {
         binding.recyclerStock.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
     }
 
@@ -57,15 +63,15 @@ class HomeFragment : Fragment() {
 
         userViewModel.fetchUser()
 
-        postViewModel.getPostData.observe(viewLifecycleOwner) { state ->
+        stockHomePageViewModel.getStockHomePageData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                 }
 
                 is UiState.Success -> {
-                    val post = state.data
-                    val postAdapter = PostAdapter(post)
-                    recyclerStock.adapter = postAdapter
+                    val stockHomePage = state.data
+                    val stockHomePageAdapter = StockHomePageAdapter(stockHomePage)
+                    recyclerStock.adapter = stockHomePageAdapter
                 }
 
                 is UiState.Failure -> {
@@ -73,7 +79,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        postViewModel.getPosts()
+        stockHomePageViewModel.getStockHomePage()
     }
 
     override fun onDestroyView() {

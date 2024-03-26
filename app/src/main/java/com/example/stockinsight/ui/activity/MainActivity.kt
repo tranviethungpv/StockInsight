@@ -7,37 +7,34 @@ import android.widget.LinearLayout
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.example.stockinsight.R
+import com.example.stockinsight.utils.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // display onboarding fragment using nav host fragment
+        val bottomNavigationViewLayout: LinearLayout = findViewById(R.id.bottom_navigation_layout)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.navigate(R.id.onboardingFragment)
-
-        val bottomNavigationViewLayout: LinearLayout = findViewById(R.id.bottom_navigation_layout)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.onboardingFragment -> bottomNavigationViewLayout.visibility = View.GONE
-                R.id.onboardingGetStartedFragment -> bottomNavigationViewLayout.visibility =
-                    View.GONE
-
-                R.id.signInFragment -> bottomNavigationViewLayout.visibility = View.GONE
-                R.id.signUpFragment -> bottomNavigationViewLayout.visibility = View.GONE
-                else -> bottomNavigationViewLayout.visibility = View.VISIBLE
-            }
-        }
-
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        if (sessionManager.isLoggedIn()) {
+            navController.navigate(R.id.homeFragment)
+            bottomNavigationViewLayout.visibility = View.VISIBLE
+        } else {
+            bottomNavigationViewLayout.visibility = View.GONE
+            navController.navigate(R.id.onboardingFragment)
+        }
 
         // Initialize currentOrder with the order of the start destination
         var currentOrder = 1
@@ -105,6 +102,17 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 else -> false
+            }
+        }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.onboardingFragment -> bottomNavigationViewLayout.visibility = View.GONE
+                R.id.onboardingGetStartedFragment -> bottomNavigationViewLayout.visibility =
+                    View.GONE
+
+                R.id.signInFragment -> bottomNavigationViewLayout.visibility = View.GONE
+                R.id.signUpFragment -> bottomNavigationViewLayout.visibility = View.GONE
+                else -> bottomNavigationViewLayout.visibility = View.VISIBLE
             }
         }
     }

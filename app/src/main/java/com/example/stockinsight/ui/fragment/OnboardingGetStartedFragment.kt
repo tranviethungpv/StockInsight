@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.example.stockinsight.R
-import com.example.stockinsight.ui.fragment.signup.SignUpFragment
 
 class OnboardingGetStartedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

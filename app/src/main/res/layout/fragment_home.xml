@@ -6,7 +6,7 @@
     style="@style/groupStyleBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.home.HomeFragment">
+    tools:context=".ui.fragment.HomeFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/layoutContent"
@@ -75,6 +75,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:id="@+id/txtHiKitsbase"
                                 style="@style/txtEudoxusSansbold18"
@@ -86,6 +87,7 @@
                                 android:singleLine="true"
                                 android:text="@string/lbl_hi_kitsbase"
                                 tools:text="@string/lbl_hi_kitsbase" />
+
                             <TextView
                                 android:id="@+id/txtUsername"
                                 style="@style/txtEudoxusSansbold18"
@@ -132,25 +134,23 @@
                     style="@style/txtEudoxusSansbold18"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.54"
-                    android:ellipsize="end"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="start"
                     android:lineSpacingExtra="@dimen/_5pxh"
-                    android:singleLine="true"
                     android:text="@string/lbl_stocks"
-                    tools:text="@string/lbl_stocks" />
+                    android:textSize="@dimen/_22pxh"
+                    tools:ignore="SpUsage" />
 
                 <TextView
                     android:id="@+id/txtViewall"
                     style="@style/txtEudoxusSansbold14"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_213pxh"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginTop="@dimen/_2pxv"
                     android:layout_marginBottom="@dimen/_2pxv"
-                    android:layout_weight="0.46"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="@dimen/_4pxh"
-                    android:singleLine="true"
+                    android:gravity="end"
                     android:text="@string/lbl_view_all"
                     tools:text="@string/lbl_view_all" />
             </LinearLayout>
@@ -160,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="start"
                 android:orientation="horizontal"
@@ -191,6 +191,8 @@
                     android:lineSpacingExtra="@dimen/_5pxh"
                     android:singleLine="true"
                     android:text="@string/lbl_your_watchlist"
+                    android:textSize="@dimen/_22pxh"
+                    tools:ignore="SpUsage"
                     tools:text="@string/lbl_your_watchlist" />
             </LinearLayout>
 
@@ -199,11 +201,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearTitleWatchlist">
+
             </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
@@ -211,7 +214,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="start"
                 android:orientation="horizontal"
@@ -229,6 +232,8 @@
                     android:lineSpacingExtra="@dimen/_5pxh"
                     android:singleLine="true"
                     android:text="@string/news"
+                    android:textSize="@dimen/_22pxh"
+                    tools:ignore="SpUsage"
                     tools:text="@string/news" />
             </LinearLayout>
 
@@ -237,11 +242,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearTitleNews">
+
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

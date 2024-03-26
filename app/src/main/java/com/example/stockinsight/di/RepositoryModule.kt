@@ -1,10 +1,8 @@
 package com.example.stockinsight.di
 
-import com.example.stockinsight.data.remote.PostApi
+import com.example.stockinsight.data.remote.StockApi
 import com.example.stockinsight.data.repository.AuthenticationImpl
 import com.example.stockinsight.data.repository.AuthenticationRepository
-import com.example.stockinsight.data.repository.PostImpl
-import com.example.stockinsight.data.repository.PostRepository
 import com.example.stockinsight.data.repository.StockImpl
 import com.example.stockinsight.data.repository.StockRepository
 import com.example.stockinsight.data.repository.UserImpl
@@ -39,15 +37,9 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStockRepository(): StockRepository {
-        return StockImpl()
-    }
-
-    @Provides
-    @Singleton
-    fun providePostRepository(
-        postApi: PostApi
-    ): PostRepository {
-        return PostImpl(postApi)
+    fun provideStockRepository(
+        stockApi: StockApi
+    ): StockRepository {
+        return StockImpl(stockApi)
     }
 }

@@ -228,7 +228,7 @@ You purchased $382.20 of Apple.</string>
     <string name="msg_2_02_0_90_t">+2,02 (0,90%) Today</string>
     <string name="lbl_08_20_am">08:20 AM</string>
     <string name="msg_how_to_add_a_pa">How to add a payment method?</string>
-    <string name="lbl_view_all">View all</string>
+    <string name="lbl_view_all">View more</string>
     <string name="msg_already_have_an2">Already have an account ? </string>
     <string name="lbl_50k">$50k</string>
     <string name="lbl_market_cap">Market Cap</string>
@@ -370,5 +370,8 @@ to login into Tradebase</string>
     <string name="news">News</string>
     <string name="user">User</string>
     <string name="lbl_username">Username</string>
+    <string name="symbol">Symbol</string>
+    <string name="company_name">Company name</string>
+    <string name="blank_value">00.00</string>
 </resources>
 

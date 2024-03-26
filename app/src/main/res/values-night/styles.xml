@@ -101,7 +101,20 @@
 
     <style name="txtEudoxusSansbold14">
         <item name="android:textSize">@dimen/_14pxh</item>
-        <item name="android:textColor">@color/light_green_900</item>
+        <item name="android:textColor">@color/light_green_500</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold12_2">
+        <item name="android:textSize">@dimen/_12pxh</item>
+        <item name="android:fontFamily">@font/eudoxus_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtEudoxusSansbold12_1">
+        <item name="android:textSize">@dimen/_12pxh</item>
+        <item name="android:textColor">@color/white_A700</item>
         <item name="android:fontFamily">@font/eudoxus_sans</item>
         <item name="android:textFontWeight" tools:targetApi="p">700</item>
     </style>

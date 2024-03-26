@@ -5,8 +5,9 @@ import com.example.stockinsight.utils.UiState
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
 
-class UserImpl(
+class UserImpl @Inject constructor(
     private val database: FirebaseFirestore
 ): UserRepository {
     override fun fetchUser(userId: String, result: (UiState<User?>) -> Unit): Task<DocumentSnapshot> {

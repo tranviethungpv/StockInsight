@@ -1,4 +1,4 @@
-package com.example.stockinsight.ui.fragment.user
+package com.example.stockinsight.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

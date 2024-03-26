@@ -123,4 +123,8 @@ class AuthenticationImpl(
                 )
             }
     }
+
+    override fun isUserLoggedIn(): Boolean {
+        return auth.currentUser != null
+    }
 }

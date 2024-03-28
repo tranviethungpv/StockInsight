@@ -1,6 +1,7 @@
 package com.example.stockinsight.di
 
-import com.example.stockinsight.data.remote.StockApi
+import com.example.stockinsight.data.remote.YFinanceApi
+import com.example.stockinsight.data.remote.YahooFinanceApi
 import com.example.stockinsight.data.repository.AuthenticationImpl
 import com.example.stockinsight.data.repository.AuthenticationRepository
 import com.example.stockinsight.data.repository.StockImpl
@@ -38,8 +39,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideStockRepository(
-        stockApi: StockApi
+        yFinanceApi: YFinanceApi
     ): StockRepository {
-        return StockImpl(stockApi)
+        return StockImpl(yFinanceApi)
     }
 }

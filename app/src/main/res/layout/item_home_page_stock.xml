@@ -42,22 +42,20 @@
             android:text="@string/company_name" />
     </LinearLayout>
 
-    <ImageView
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/imageChart"
-        android:layout_width="@dimen/_80pxh"
-        android:layout_height="@dimen/_32pxh"
-        android:layout_marginStart="@dimen/_18pxh"
-        android:layout_marginTop="@dimen/_8pxv"
-        android:layout_marginBottom="@dimen/_8pxv"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_chart_light_green_500_32x80"
-        tools:ignore="ContentDescription" />
+        android:layout_width="@dimen/_120pxh"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/_5pxh"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:id="@+id/linearColumnprice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_17pxh"
+        android:layout_marginStart="@dimen/_10pxh"
         android:layout_marginTop="@dimen/_2pxv"
         android:layout_marginEnd="@dimen/_5pxh"
         android:layout_marginBottom="@dimen/_2pxv"

@@ -55,4 +55,6 @@
     <color name="white_A700">#ffffff</color>
     <color name="checked">#8ee04e</color>
     <color name="unchecked">#7f121826</color>
+    <color name="red_100">#26E82127</color>
+    <color name="light_green_300">#268EE04E</color>
 </resources>

@@ -10,9 +10,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.stockinsight.R
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 
 fun Fragment.toast(msg: String?){
     Toast.makeText(requireContext(),msg,Toast.LENGTH_LONG).show()
@@ -57,4 +61,41 @@ fun showDialog(message: String, type: String, context: Context) {
     }
 
     dialog.show()
+}
+
+fun drawLineChart(chart: LineChart, entries: List<Entry>, type: String) {
+    val dataSet = LineDataSet(entries, "Label") // add entries to dataset
+    dataSet.setDrawValues(false)
+    dataSet.setDrawCircles(false)
+    dataSet.setDrawFilled(true)
+    dataSet.lineWidth = 2f
+
+    if (type == "down") {
+        dataSet.color = ContextCompat.getColor(chart.context, R.color.red_700)
+        dataSet.fillColor = ContextCompat.getColor(chart.context, R.color.red_100)
+    } else if (type == "up") {
+        dataSet.color = ContextCompat.getColor(chart.context, R.color.light_green_500)
+        dataSet.fillColor = ContextCompat.getColor(chart.context, R.color.light_green_300)
+    }
+
+    val lineData = LineData(dataSet)
+    chart.data = lineData
+
+    // Hide all labels, grid lines, and other chart decorations
+    chart.axisLeft.isEnabled = false
+    chart.axisRight.isEnabled = false
+    chart.xAxis.isEnabled = false
+    chart.description.isEnabled = false
+    chart.legend.isEnabled = false
+    chart.setDrawGridBackground(false)
+    chart.setDrawBorders(false)
+    chart.setDrawMarkers(false)
+    chart.setTouchEnabled(false)
+    chart.isDragEnabled = false
+    chart.setScaleEnabled(false)
+    chart.setPinchZoom(false)
+    chart.isDoubleTapToZoomEnabled = false
+    chart.isHighlightPerDragEnabled = false
+
+    chart.invalidate()
 }

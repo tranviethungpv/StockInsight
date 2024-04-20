@@ -4,6 +4,9 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
@@ -18,8 +21,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
-fun Fragment.toast(msg: String?){
-    Toast.makeText(requireContext(),msg,Toast.LENGTH_LONG).show()
+fun Fragment.toast(msg: String?) {
+    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
 }
 
 fun String.isValidEmail() =
@@ -34,8 +37,7 @@ fun showDialog(message: String, type: String, context: Context) {
     val window = dialog.window ?: return
 
     window.setLayout(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
+        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
     )
     window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -47,9 +49,11 @@ fun showDialog(message: String, type: String, context: Context) {
         "error" -> {
             imgError.setImageResource(R.drawable.img_error)
         }
+
         "warning" -> {
             imgError.setImageResource(R.drawable.img_warning)
         }
+
         "success" -> {
             imgError.setImageResource(R.drawable.img_success)
         }
@@ -98,4 +102,16 @@ fun drawLineChart(chart: LineChart, entries: List<Entry>, type: String) {
     chart.isHighlightPerDragEnabled = false
 
     chart.invalidate()
+}
+
+fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork ?: return false
+    val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return when {
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+        else -> false
+    }
 }

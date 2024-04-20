@@ -1,24 +1,20 @@
 package com.example.stockinsight.ui.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.stockinsight.databinding.FragmentHomeBinding
 import com.example.stockinsight.ui.adapter.MultiQuoteForHomePageAdapter
 import com.example.stockinsight.ui.viewmodel.QuoteViewModel
 import com.example.stockinsight.ui.viewmodel.UserViewModel
 import com.example.stockinsight.utils.UiState
+import com.example.stockinsight.utils.isNetworkAvailable
 import com.example.stockinsight.utils.showDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,17 +27,6 @@ class HomeFragment : Fragment() {
     private val quoteViewModel: QuoteViewModel by viewModels()
     private var multiQuoteForHomePageAdapter: MultiQuoteForHomePageAdapter? = null
 
-    private val recyclerStock: RecyclerView by lazy {
-        binding.recyclerStock.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(
-                DividerItemDecoration(
-                    context, DividerItemDecoration.VERTICAL
-                )
-            )
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -52,35 +37,67 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userViewModel.userInfo.observe(viewLifecycleOwner) { user ->
-            if (user != null) {
-                binding.txtUsername.text = user.username
-                binding.imageMemojiBoysFortyOne.let {
-                    Glide.with(requireContext()).load(user.profileImageUrl).into(it)
+        if (isNetworkAvailable(requireContext())) {
+            userViewModel.fetchUser.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        binding.txtUsername.text = state.data.username
+                        Glide.with(requireContext()).load(state.data.profileImageUrl)
+                            .into(binding.imageMemojiBoysFortyOne)
+                    }
+
+                    is UiState.Failure -> {
+                        Log.e("HomeFragment", "Error fetching user: ${state.message}")
+                        showDialog(state.message, "error", requireContext())
+                    }
+
+                    else -> {}
                 }
             }
-        }
+            if (userViewModel.fetchUser.value == null) {
+                userViewModel.fetchUser()
+            }
 
-        userViewModel.fetchUser()
+            binding.recyclerStock.setLayoutManager(
+                LinearLayoutManager(
+                    requireContext()
+                )
+            )
+            // Check if the quote data is already cached
+            quoteViewModel.getCachedQuoteForHomePage()?.let { data ->
+                // Use the cached data to update the UI
+                binding.recyclerStock.setAdapter(MultiQuoteForHomePageAdapter(data))
+            } ?: run {
+                // Fetch the quote data if it's not cached
+                quoteViewModel.fetchQuoteForHomePage()
+            }
+            quoteViewModel.fetchQuoteForHomePage.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        binding.recyclerStock.addVeiledItems(11)
+                        binding.recyclerStock.veil()
+                    }
 
-        quoteViewModel.fetQuoteForHomePage.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {
-                }
+                    is UiState.Success -> {
+                        multiQuoteForHomePageAdapter = MultiQuoteForHomePageAdapter(state.data)
 
-                is UiState.Success -> {
-                    val multiQuoteForHomePage = state.data
-                    multiQuoteForHomePageAdapter =
-                        MultiQuoteForHomePageAdapter(multiQuoteForHomePage)
-                    recyclerStock.adapter = multiQuoteForHomePageAdapter
-                }
+                        binding.recyclerStock.setAdapter(multiQuoteForHomePageAdapter)
+                        binding.recyclerStock.unVeil()
+                    }
 
-                is UiState.Failure -> {
-                    showDialog(state.message, "error", requireContext())
+                    is UiState.Failure -> {
+                        Log.e("HomeFragment", "Error fetching quotes: ${state.message}")
+                        showDialog(state.message, "error", requireContext())
+                    }
                 }
             }
+            if (quoteViewModel.fetchQuoteForHomePage.value == null) {
+                quoteViewModel.fetchQuoteForHomePage()
+            }
+
+        } else {
+            showDialog("No internet connection", "error", requireContext())
         }
-        quoteViewModel.getQuoteForHomePage()
     }
 
     override fun onDestroyView() {

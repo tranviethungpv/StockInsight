@@ -155,7 +155,8 @@
                     tools:text="@string/lbl_view_all" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+
+            <com.skydoves.androidveil.VeilRecyclerFrameView
                 android:id="@+id/recyclerStock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,9 +165,17 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearTitleStock">
-
-            </androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toBottomOf="@+id/linearTitleStock"
+                app:veilFrame_baseAlpha="0.6"
+                app:veilFrame_baseColor="@android:color/darker_gray"
+                app:veilFrame_highlightAlpha="1.0"
+                app:veilFrame_highlightColor="@android:color/white"
+                app:veilFrame_isItemWrapContentHeight="true"
+                app:veilFrame_isItemWrapContentWidth="false"
+                app:veilFrame_layout="@layout/item_home_page_stock"
+                app:veilFrame_radius="8dp"
+                app:veilFrame_shimmerEnable="true"
+                app:veilFrame_veiled="true" />
 
             <LinearLayout
                 android:id="@+id/linearTitleWatchlist"

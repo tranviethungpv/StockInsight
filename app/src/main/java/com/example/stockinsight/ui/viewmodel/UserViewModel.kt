@@ -13,14 +13,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val auth: FirebaseAuth
-): ViewModel() {
-    private val _userInfo = MutableLiveData<User?>()
-    val userInfo: LiveData<User?> get() = _userInfo
-
-    private val _fetchUser = MutableLiveData<UiState<String>>()
-    val fetchUser: LiveData<UiState<String>> get() = _fetchUser
+    private val userRepository: UserRepository, private val auth: FirebaseAuth
+) : ViewModel() {
+    private val _fetchUser = MutableLiveData<UiState<User>>()
+    val fetchUser: LiveData<UiState<User>> get() = _fetchUser
 
     fun fetchUser() {
         val userId = auth.currentUser?.uid
@@ -29,12 +25,15 @@ class UserViewModel @Inject constructor(
             userRepository.fetchUser(userId) { state ->
                 when (state) {
                     is UiState.Success -> {
-                        _userInfo.value = state.data
-                        _fetchUser.value = UiState.Success("User fetched successfully")
+                        state.data?.let {
+                            _fetchUser.value = UiState.Success(it)
+                        }
                     }
+
                     is UiState.Failure -> {
                         _fetchUser.value = UiState.Failure(state.message)
                     }
+
                     else -> {}
                 }
             }

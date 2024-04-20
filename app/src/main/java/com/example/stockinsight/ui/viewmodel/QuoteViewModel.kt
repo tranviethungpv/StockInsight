@@ -15,10 +15,11 @@ import javax.inject.Inject
 class QuoteViewModel @Inject constructor(
     private val repository: StockRepository
 ) : ViewModel() {
-    private val _fetQuoteForHomePage = MutableLiveData<UiState<ArrayList<StockInfo>>>()
-    val fetQuoteForHomePage: LiveData<UiState<ArrayList<StockInfo>>> get() = _fetQuoteForHomePage
+    private val _fetchQuoteForHomePage = MutableLiveData<UiState<ArrayList<StockInfo>>>()
+    val fetchQuoteForHomePage: LiveData<UiState<ArrayList<StockInfo>>> get() = _fetchQuoteForHomePage
+    private var cachedQuoteForHomePage: ArrayList<StockInfo>? = null
 
-    fun getQuoteForHomePage() {
+    fun fetchQuoteForHomePage() {
         val symbols = listOf(
             "VNM",
             "^DJI",
@@ -34,7 +35,7 @@ class QuoteViewModel @Inject constructor(
         )
         val interval = "1h"
         val range = "36h"
-        _fetQuoteForHomePage.value = UiState.Loading
+        _fetchQuoteForHomePage.value = UiState.Loading
         viewModelScope.launch {
             val data = ArrayList<StockInfo>()
             for (symbol in symbols) {
@@ -45,14 +46,19 @@ class QuoteViewModel @Inject constructor(
                         }
 
                         is UiState.Failure -> {
-                            _fetQuoteForHomePage.value = UiState.Failure(state.message)
+                            _fetchQuoteForHomePage.value = UiState.Failure(state.message)
                         }
 
                         else -> {}
                     }
                 }
             }
-            _fetQuoteForHomePage.value = UiState.Success(data)
+            _fetchQuoteForHomePage.value = UiState.Success(data)
+            cachedQuoteForHomePage = data
         }
+    }
+
+    fun getCachedQuoteForHomePage(): ArrayList<StockInfo>? {
+        return cachedQuoteForHomePage
     }
 }

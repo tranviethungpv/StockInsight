@@ -4,8 +4,8 @@
     android:id="@+id/linearRowtrash"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/_5pxv"
-    android:paddingBottom="@dimen/_5pxv"
+    android:paddingTop="@dimen/_4pxv"
+    android:paddingBottom="@dimen/_4pxv"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -68,10 +68,10 @@
             style="@style/txtEudoxusSansbold18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
             android:gravity="end"
             android:lineSpacingExtra="@dimen/_5pxh"
-            android:singleLine="true"
+            android:singleLine="false"
+            android:maxLines="1"
             android:text="@string/blank_value" />
 
         <LinearLayout
@@ -99,11 +99,11 @@
                 android:textColor="@color/light_green_500"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4pxh"
-                android:layout_weight="0.83"
-                android:ellipsize="end"
+                android:layout_weight="1"
                 android:gravity="end"
                 android:lineSpacingExtra="@dimen/_4pxh"
-                android:singleLine="true"
+                android:singleLine="false"
+                android:maxLines="1"
                 android:text="@string/blank_value"
                 tools:text="@string/blank_value" />
         </LinearLayout>

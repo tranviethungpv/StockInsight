@@ -1,13 +1,12 @@
 package com.example.stockinsight.di
 
-import com.example.stockinsight.data.remote.YFinanceApi
-import com.example.stockinsight.data.remote.YahooFinanceApi
 import com.example.stockinsight.data.repository.AuthenticationImpl
 import com.example.stockinsight.data.repository.AuthenticationRepository
 import com.example.stockinsight.data.repository.StockImpl
 import com.example.stockinsight.data.repository.StockRepository
 import com.example.stockinsight.data.repository.UserImpl
 import com.example.stockinsight.data.repository.UserRepository
+import com.example.stockinsight.data.socket.SocketManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -22,8 +21,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        auth: FirebaseAuth,
-        database: FirebaseFirestore
+        auth: FirebaseAuth, database: FirebaseFirestore
     ): AuthenticationRepository {
         return AuthenticationImpl(auth, database)
     }
@@ -39,8 +37,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideStockRepository(
-        yFinanceApi: YFinanceApi
+        database: FirebaseFirestore, socketManager: SocketManager
     ): StockRepository {
-        return StockImpl(yFinanceApi)
+        return StockImpl(database, socketManager)
     }
 }

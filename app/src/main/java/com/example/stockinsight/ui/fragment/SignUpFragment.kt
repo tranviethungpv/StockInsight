@@ -158,11 +158,11 @@ class SignUpFragment : Fragment() {
             address = null,
             phoneNumber = null,
             email = binding.etInputsEmail.text.toString(),
-            profileImageUrl = null,
             isVerified = false,
             provider = null,
             providerId = null,
-            token = null
+            token = null,
+            watchlist = emptyList()
         )
     }
 

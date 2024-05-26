@@ -29,7 +29,7 @@
                 android:id="@+id/toolbarToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="@dimen/_5pxv"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
                 app:contentInsetStart="0dp"
@@ -45,20 +45,20 @@
                     android:baselineAligned="false"
                     android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/linearAvatar"
-                        android:layout_width="@dimen/_48pxh"
-                        android:layout_height="@dimen/_48pxh"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
+                    <!--                    <LinearLayout-->
+                    <!--                        android:id="@+id/linearAvatar"-->
+                    <!--                        android:layout_width="@dimen/_48pxh"-->
+                    <!--                        android:layout_height="@dimen/_48pxh"-->
+                    <!--                        android:gravity="center_horizontal"-->
+                    <!--                        android:orientation="vertical">-->
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/imageMemojiBoysFortyOne"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/user_anonymous"
-                            tools:ignore="ContentDescription" />
-                    </LinearLayout>
+                    <!--                        <de.hdodenhof.circleimageview.CircleImageView-->
+                    <!--                            android:id="@+id/imageMemojiBoysFortyOne"-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:src="@drawable/user_anonymous"-->
+                    <!--                            tools:ignore="ContentDescription" />-->
+                    <!--                    </LinearLayout>-->
 
                     <LinearLayout
                         android:id="@+id/linearWelcome"
@@ -141,18 +141,6 @@
                     android:text="@string/lbl_stocks"
                     android:textSize="@dimen/_22pxh"
                     tools:ignore="SpUsage" />
-
-                <TextView
-                    android:id="@+id/txtViewall"
-                    style="@style/txtEudoxusSansbold14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="@dimen/_2pxv"
-                    android:layout_marginBottom="@dimen/_2pxv"
-                    android:gravity="end"
-                    android:text="@string/lbl_view_all"
-                    tools:text="@string/lbl_view_all" />
             </LinearLayout>
 
 
@@ -164,6 +152,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearTitleStock"
                 app:veilFrame_baseAlpha="0.6"
@@ -176,88 +165,6 @@
                 app:veilFrame_radius="8dp"
                 app:veilFrame_shimmerEnable="true"
                 app:veilFrame_veiled="true" />
-
-            <LinearLayout
-                android:id="@+id/linearTitleWatchlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="start"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerStock">
-
-                <TextView
-                    android:id="@+id/txtWatchlist"
-                    style="@style/txtEudoxusSansbold18"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.54"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="@dimen/_5pxh"
-                    android:singleLine="true"
-                    android:text="@string/lbl_your_watchlist"
-                    android:textSize="@dimen/_22pxh"
-                    tools:ignore="SpUsage"
-                    tools:text="@string/lbl_your_watchlist" />
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerWatchlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearTitleWatchlist">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <LinearLayout
-                android:id="@+id/linearTitleNews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="start"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerWatchlist">
-
-                <TextView
-                    android:id="@+id/txtNews"
-                    style="@style/txtEudoxusSansbold18"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.54"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="@dimen/_5pxh"
-                    android:singleLine="true"
-                    android:text="@string/news"
-                    android:textSize="@dimen/_22pxh"
-                    tools:ignore="SpUsage"
-                    tools:text="@string/news" />
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerNews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearTitleNews">
-
-            </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

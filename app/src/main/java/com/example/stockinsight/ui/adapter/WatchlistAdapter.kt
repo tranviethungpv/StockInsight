@@ -13,30 +13,33 @@ import com.example.stockinsight.databinding.ItemHomePageStockBinding
 import com.example.stockinsight.utils.drawSimpleLineChart
 import com.github.mikephil.charting.data.Entry
 
-class MultiQuoteForHomePageAdapter(
-    private val onItemClick: (FullStockInfo) -> Unit
-) : ListAdapter<FullStockInfo, MultiQuoteForHomePageAdapter.MultiQuoteForHomePageViewHolder>(
+class WatchlistAdapter(
+    private val onItemClick: (FullStockInfo) -> Unit,
+    private val onItemLongClick: (FullStockInfo, View) -> Unit
+) : ListAdapter<FullStockInfo, WatchlistAdapter.WatchlistAdapterViewHolder>(
     FullStockInfoDiffCallback()
 ) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
-    ): MultiQuoteForHomePageViewHolder {
+    ): WatchlistAdapterViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_home_page_stock, parent, false)
-        return MultiQuoteForHomePageViewHolder(itemView)
+        return WatchlistAdapterViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: MultiQuoteForHomePageViewHolder, position: Int) {
-        val multiQuoteForHomePage = getItem(position)
-        holder.bind(multiQuoteForHomePage)
+    override fun onBindViewHolder(holder: WatchlistAdapterViewHolder, position: Int) {
+        val watchlistQuote = getItem(position)
+        holder.bind(watchlistQuote)
         holder.itemView.setOnClickListener {
-            onItemClick(multiQuoteForHomePage)
+            onItemClick(watchlistQuote)
         }
+        holder.itemView.setOnLongClickListener { view ->
+            onItemLongClick(watchlistQuote, view)
+            true}
     }
 
-    inner class MultiQuoteForHomePageViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class WatchlistAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemHomePageStockBinding: ItemHomePageStockBinding =
             ItemHomePageStockBinding.bind(itemView)
 

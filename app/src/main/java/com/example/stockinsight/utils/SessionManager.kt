@@ -7,18 +7,24 @@ import javax.inject.Singleton
 
 @Singleton
 class SessionManager @Inject constructor(private val context: Context) {
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     companion object {
         private const val PREF_NAME = "com.example.stockinsight.PREF_NAME"
         private const val IS_LOGGED_IN = "IS_LOGGED_IN"
+        private const val USER_ID = "USER_ID"
     }
 
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
-    fun saveLoginSession() {
+    fun saveLoginSession(userId: String) {
         val editor = sharedPreferences.edit()
         editor.putBoolean(IS_LOGGED_IN, true)
+        editor.putString(USER_ID, userId)
         editor.apply()
+    }
+
+    fun getUserId(): String? {
+        return sharedPreferences.getString(USER_ID, null)
     }
 
     fun clearLoginSession() {

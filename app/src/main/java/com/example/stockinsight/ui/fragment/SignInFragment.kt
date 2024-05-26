@@ -26,8 +26,7 @@ class SignInFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
         return binding.root
@@ -84,9 +83,18 @@ class SignInFragment : Fragment() {
                     )
                 }
             }
+
+            tvForgotPassword.setOnClickListener {
+                if (binding.etInputsEmail.text.isNullOrEmpty()) {
+                    showDialog("Email is required", "error", requireContext())
+                    return@setOnClickListener
+                }
+                viewModel.forgotPassword(binding.etInputsEmail.text.toString())
+            }
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun onFocusChange(
         hasFocus: Boolean,
         linearColumn: LinearLayout,
@@ -127,6 +135,23 @@ class SignInFragment : Fragment() {
                     binding.btnStart.text = getString(R.string.lbl_start)
                     showDialog("Sign In Successful", "success", requireContext())
                     findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
+                }
+            }
+        }
+
+        viewModel.forgotPassword.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                }
+
+                is UiState.Failure -> {
+                    showDialog(state.message, "warning", requireContext())
+                }
+
+                is UiState.Success -> {
+                    showDialog(
+                        "Password reset email sent successfully", "success", requireContext()
+                    )
                 }
             }
         }

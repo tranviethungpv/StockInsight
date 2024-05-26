@@ -81,34 +81,34 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/etInputsEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_border_white_a700_19_radius_24"
                 android:ellipsize="end"
                 android:hint="@string/lbl_email_address"
-                android:id="@+id/etInputsEmail"
                 android:inputType="textEmailAddress"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
                 android:lineSpacingExtra="@dimen/_5pxh"
-                android:paddingBottom="@dimen/_20pxv"
-                android:paddingEnd="@dimen/_30pxh"
                 android:paddingStart="@dimen/_24pxh"
-                android:paddingTop="@dimen/_22pxv" android:singleLine="true"
+                android:paddingTop="@dimen/_22pxv"
+                android:paddingEnd="@dimen/_30pxh"
+                android:paddingBottom="@dimen/_20pxv"
+                android:singleLine="true"
                 android:textColorHint="@color/gray_600"
-                tools:ignore="Autofill"/>
+                tools:ignore="Autofill" />
         </LinearLayout>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/txtTitleEmail"
             style="@style/txtSolidRounded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
-            android:fontFamily="@font/eudoxus_sans"
             android:layout_marginStart="@dimen/_24pxh"
             android:layout_marginEnd="@dimen/_24pxh"
             android:layout_marginBottom="@dimen/_10pxv"
             android:ellipsize="end"
+            android:fontFamily="@font/eudoxus_sans"
             android:lineSpacingExtra="@dimen/_4pxh"
             android:paddingStart="@dimen/_8pxh"
             android:paddingTop="@dimen/_3pxv"
@@ -116,6 +116,7 @@
             android:paddingBottom="@dimen/_2pxv"
             android:singleLine="true"
             android:text="@string/lbl_email_address"
+            android:visibility="gone"
             tools:text="@string/lbl_email_address" />
     </FrameLayout>
 
@@ -138,34 +139,35 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/etInputsPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
                 android:background="@drawable/rectangle_border_white_a700_19_radius_24"
                 android:drawablePadding="@dimen/_30pxh"
-                android:ellipsize="end" android:hint="@string/lbl_password"
-                android:id="@+id/etInputsPassword"
+                android:ellipsize="end"
+                android:hint="@string/lbl_password"
                 android:inputType="textPassword"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical|start"
                 android:lineSpacingExtra="@dimen/_5pxh"
-                android:paddingBottom="@dimen/_20pxv"
-                android:paddingEnd="@dimen/_25pxh"
                 android:paddingStart="@dimen/_24pxh"
-                android:paddingTop="@dimen/_22pxv" android:singleLine="true"
+                android:paddingTop="@dimen/_22pxv"
+                android:paddingEnd="@dimen/_25pxh"
+                android:paddingBottom="@dimen/_20pxv"
+                android:singleLine="true"
                 android:textColorHint="@color/gray_600"
-                tools:ignore="Autofill"/>
+                tools:ignore="Autofill" />
 
             <ImageView
                 android:id="@+id/btnShowPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_30pxv"
                 android:layout_alignEnd="@id/etInputsPassword"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_30pxv"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/txtTitlePassword"
             style="@style/txtSolidRounded"
             android:layout_width="wrap_content"
@@ -182,8 +184,20 @@
             android:paddingBottom="@dimen/_2pxv"
             android:singleLine="true"
             android:text="@string/lbl_password"
+            android:visibility="gone"
             tools:text="@string/lbl_password" />
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_forgot_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_24pxh"
+        android:layout_marginTop="@dimen/_5pxh"
+        android:paddingHorizontal="@dimen/_30pxv"
+        android:text="@string/lbl_forgot"
+        style="@style/txtEudoxusSansbold14"
+        android:textAlignment="viewEnd" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStart"
@@ -191,7 +205,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_24pxh"
-        android:layout_marginTop="@dimen/_220pxv"
+        android:layout_marginTop="@dimen/_200pxh"
         android:layout_marginEnd="@dimen/_24pxh"
         android:ellipsize="end"
         android:gravity="center"

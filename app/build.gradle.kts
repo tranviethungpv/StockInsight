@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -35,6 +36,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
 
     buildFeatures {
@@ -66,4 +68,5 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation ("com.github.skydoves:androidveil:1.1.3")
+    implementation ("io.socket:socket.io-client:2.0.0")
 }

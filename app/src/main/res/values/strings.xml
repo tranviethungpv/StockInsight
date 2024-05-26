@@ -373,5 +373,30 @@ to login into Tradebase</string>
     <string name="symbol">Symbol</string>
     <string name="company_name">Company name</string>
     <string name="blank_value">00.00</string>
+    <string name="no_watchlist_data">No watchlist data</string>
+    <string name="add_item_to_watchlist">Add item to watchlist</string>
+    <string name="add_quote">Add quote</string>
+    <string name="default_symbol">AA.AA</string>
+    <string name="default_name">Company\'s name</string>
+    <string name="today_open">Today\'s Open</string>
+    <string name="today_high">Today\'s High</string>
+    <string name="today_low">Today\'s Low</string>
+    <string name="ratio">P/E</string>
+    <string name="null_value">-</string>
+    <string name="_52_week_high">52-Week High</string>
+    <string name="_52_week_low">52-Week Low</string>
+    <string name="average_volume">Avg. Volume</string>
+    <string name="yield">Yield</string>
+    <string name="beta">Beta</string>
+    <string name="earnings_per_share">EPS</string>
+    <string name="lbl_3m">3M</string>
+    <string name="lbl_6m">6M</string>
+    <string name="lbl_ytd">YTD</string>
+    <string name="lbl_2y">2Y</string>
+    <string name="lbl_5y">5Y</string>
+    <string name="lbl_10y">10Y</string>
+    <string name="lbl_all">ALL</string>
+    <string name="set_notification">Set notification</string>
+    <string name="remove_from_watchlist">Remove from watchlist</string>
 </resources>
 

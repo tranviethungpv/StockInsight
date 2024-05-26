@@ -77,12 +77,20 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.stockinsight.ui.fragment.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_stockDetailFragment"
+            app:destination="@id/stockDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/watchlistFragment"
         android:name="com.example.stockinsight.ui.fragment.WatchlistFragment"
         android:label="fragment_watchlist"
-        tools:layout="@layout/fragment_watchlist" />
+        tools:layout="@layout/fragment_watchlist" >
+        <action
+            android:id="@+id/action_watchlistFragment_to_stockDetailFragment"
+            app:destination="@id/stockDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.example.stockinsight.ui.fragment.NewsFragment"
@@ -93,4 +101,12 @@
         android:name="com.example.stockinsight.ui.fragment.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
+    <dialog
+        android:id="@+id/stockDetailFragment"
+        android:name="com.example.stockinsight.ui.fragment.StockDetailFragment"
+        android:label="StockDetailFragment" >
+        <argument
+            android:name="stockSymbol"
+            app:argType="string" />
+    </dialog>
 </navigation>

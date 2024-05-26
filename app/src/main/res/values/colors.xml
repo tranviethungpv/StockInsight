@@ -57,4 +57,6 @@
     <color name="unchecked">#7f121826</color>
     <color name="red_100">#26E82127</color>
     <color name="light_green_300">#268EE04E</color>
+    <color name="text_color">#121826</color>
+    <color name="radio_button">#8EE04E</color>
 </resources>

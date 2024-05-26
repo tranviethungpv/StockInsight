@@ -7,8 +7,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
 
-class AuthenticationImpl(
+class AuthenticationImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val database: FirebaseFirestore,
 ) : AuthenticationRepository {
@@ -100,20 +101,24 @@ class AuthenticationImpl(
     }
 
     override fun signInUser(email: String, password: String, result: (UiState<String>) -> Unit) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    val userId = task.result?.user?.uid
+                    if (userId != null) {
+                        result.invoke(
+                            UiState.Success(userId)
+                        )
+                    } else {
+//                        result.invoke(
+//                            UiState.Failure("User ID is null")
+//                        )
+                    }
+                } else {
                     result.invoke(
-                        UiState.Success(
-                            "User signed in successfully"
+                        UiState.Failure(
+                            task.exception?.message ?: "Error occurred"
                         )
                     )
-                } else {
-//                    result.invoke(
-//                        UiState.Failure(
-//                            task.exception?.message ?: "Error occurred"
-//                        )
-//                    )
                 }
             }.addOnFailureListener {
                 result.invoke(
@@ -122,6 +127,24 @@ class AuthenticationImpl(
                     )
                 )
             }
+    }
+
+    override fun forgotPassword(email: String, result: (UiState<String>) -> Unit) {
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                result.invoke(
+                    UiState.Success(
+                        "Password reset email sent successfully"
+                    )
+                )
+            } else {
+                result.invoke(
+                    UiState.Failure(
+                        task.exception?.message ?: "Error occurred"
+                    )
+                )
+            }
+        }
     }
 
     override fun isUserLoggedIn(): Boolean {

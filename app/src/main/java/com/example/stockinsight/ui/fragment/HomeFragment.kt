@@ -7,30 +7,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.stockinsight.databinding.FragmentHomeBinding
 import com.example.stockinsight.ui.adapter.MultiQuoteForHomePageAdapter
-import com.example.stockinsight.ui.viewmodel.QuoteViewModel
+import com.example.stockinsight.ui.viewmodel.StockViewModel
 import com.example.stockinsight.ui.viewmodel.UserViewModel
+import com.example.stockinsight.utils.SessionManager
 import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.isNetworkAvailable
 import com.example.stockinsight.utils.showDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeBinding
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private val userViewModel: UserViewModel by viewModels()
-    private val quoteViewModel: QuoteViewModel by viewModels()
-    private var multiQuoteForHomePageAdapter: MultiQuoteForHomePageAdapter? = null
+    private val stockViewModel: StockViewModel by viewModels()
+    private lateinit var multiQuoteForHomePageAdapter: MultiQuoteForHomePageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -38,70 +42,80 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (isNetworkAvailable(requireContext())) {
-            userViewModel.fetchUser.observe(viewLifecycleOwner) { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        binding.txtUsername.text = state.data.username
-                        Glide.with(requireContext()).load(state.data.profileImageUrl)
-                            .into(binding.imageMemojiBoysFortyOne)
-                    }
+            userViewModel.fetchUser()
 
-                    is UiState.Failure -> {
-                        Log.e("HomeFragment", "Error fetching user: ${state.message}")
-                        showDialog(state.message, "error", requireContext())
-                    }
-
-                    else -> {}
-                }
-            }
-            if (userViewModel.fetchUser.value == null) {
-                userViewModel.fetchUser()
-            }
-
-            binding.recyclerStock.setLayoutManager(
-                LinearLayoutManager(
-                    requireContext()
-                )
+            // Request stock data
+            val symbols = listOf(
+                "VNM",
+                "^DJI",
+                "AAPL",
+                "SBUX",
+                "NKE",
+                "GOOG",
+                "^FTSE",
+                "^GDAXI",
+                "^HSI",
+                "^N225",
+                "^GSPC"
             )
-            // Check if the quote data is already cached
-            quoteViewModel.getCachedQuoteForHomePage()?.let { data ->
-                // Use the cached data to update the UI
-                binding.recyclerStock.setAdapter(MultiQuoteForHomePageAdapter(data))
-            } ?: run {
-                // Fetch the quote data if it's not cached
-                quoteViewModel.fetchQuoteForHomePage()
-            }
-            quoteViewModel.fetchQuoteForHomePage.observe(viewLifecycleOwner) { state ->
-                when (state) {
-                    is UiState.Loading -> {
-                        binding.recyclerStock.addVeiledItems(11)
-                        binding.recyclerStock.veil()
-                    }
+            val interval = "1m"
+            val range = "1d"
+            stockViewModel.getListQuotesForHomePage(symbols, interval, range)
 
-                    is UiState.Success -> {
-                        multiQuoteForHomePageAdapter = MultiQuoteForHomePageAdapter(state.data)
-
-                        binding.recyclerStock.setAdapter(multiQuoteForHomePageAdapter)
-                        binding.recyclerStock.unVeil()
-                    }
-
-                    is UiState.Failure -> {
-                        Log.e("HomeFragment", "Error fetching quotes: ${state.message}")
-                        showDialog(state.message, "error", requireContext())
-                    }
-                }
-            }
-            if (quoteViewModel.fetchQuoteForHomePage.value == null) {
-                quoteViewModel.fetchQuoteForHomePage()
-            }
-
+            setupRecyclerView()
+            observer()
         } else {
             showDialog("No internet connection", "error", requireContext())
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setupRecyclerView() {
+        multiQuoteForHomePageAdapter = MultiQuoteForHomePageAdapter(onItemClick = {
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToStockDetailFragment(it.quoteInfo.symbol)
+            binding.root.findNavController().navigate(action)
+        })
+
+        binding.recyclerStock.apply {
+            setLayoutManager(LinearLayoutManager(requireContext()))
+            setAdapter(multiQuoteForHomePageAdapter)
+        }
+    }
+
+    private fun observer() {
+        userViewModel.fetchUser.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    binding.txtUsername.text = state.data.username
+//                        Glide.with(requireContext()).load(state.data.profileImageUrl)
+//                            .into(binding.imageMemojiBoysFortyOne)
+                }
+
+                is UiState.Failure -> {
+                    showDialog(state.message, "error", requireContext())
+                }
+
+                else -> {}
+            }
+        }
+
+        stockViewModel.listQuotesForHomePage.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    binding.recyclerStock.addVeiledItems(11)
+                    binding.recyclerStock.veil()
+                }
+
+                is UiState.Success -> {
+                    Log.d("HomeFragment", "Data: ${state.data.size}")
+                    multiQuoteForHomePageAdapter.updateList(state.data)
+                    binding.recyclerStock.unVeil()
+                }
+
+                is UiState.Failure -> {
+                    showDialog(state.message, "error", requireContext())
+                }
+            }
+        }
     }
 }

@@ -3,12 +3,13 @@ package com.example.stockinsight.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.stockinsight.data.model.User
 import com.example.stockinsight.data.repository.UserRepository
 import com.example.stockinsight.utils.UiState
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +18,9 @@ class UserViewModel @Inject constructor(
 ) : ViewModel() {
     private val _fetchUser = MutableLiveData<UiState<User>>()
     val fetchUser: LiveData<UiState<User>> get() = _fetchUser
+
+    private val _isSymbolInWatchlist = MutableLiveData<Boolean>()
+    val isSymbolInWatchlist: LiveData<Boolean> get() = _isSymbolInWatchlist
 
     fun fetchUser() {
         val userId = auth.currentUser?.uid
@@ -37,6 +41,13 @@ class UserViewModel @Inject constructor(
                     else -> {}
                 }
             }
+        }
+    }
+
+    fun checkSymbolInWatchlist(userId: String, symbol: String) {
+        viewModelScope.launch {
+            val isInWatchlist = userRepository.isSymbolInWatchlist(userId, symbol)
+            _isSymbolInWatchlist.postValue(isInWatchlist)
         }
     }
 }

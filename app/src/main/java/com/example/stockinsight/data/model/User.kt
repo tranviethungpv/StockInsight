@@ -10,11 +10,12 @@ data class User(
     val address: String?,
     val phoneNumber: String?,
     val email: String,
-    val profileImageUrl: String?,
+//    val profileImageUrl: String?,
     val isVerified: Boolean,
     val provider: String?,
     val providerId: String?,
     val token: String?,
+    val watchlist: List<String>?
 ) {
     constructor(): this(
         "",
@@ -24,10 +25,10 @@ data class User(
         "",
         "",
         "",
-        null,
         false,
         null,
         null,
         null,
+        emptyList()
     )
 }

@@ -7,4 +7,5 @@ import com.google.firebase.firestore.DocumentSnapshot
 
 interface UserRepository {
     fun fetchUser(userId: String, result: (UiState<User?>) -> Unit): Task<DocumentSnapshot>
+    suspend fun isSymbolInWatchlist(userId: String, symbol: String): Boolean
 }

@@ -10,6 +10,6 @@ data class CompanyOfficer(
     @SerializedName("name") val name: String,
     @SerializedName("title") val title: String,
     @SerializedName("totalPay") val totalPay: Long,
-    @SerializedName("unexercisedValue") val unexercisedValue: Int,
+    @SerializedName("unexercisedValue") val unexercisedValue: Long,
     @SerializedName("yearBorn") val yearBorn: Int?
 )

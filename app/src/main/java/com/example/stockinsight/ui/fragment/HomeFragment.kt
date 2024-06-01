@@ -1,6 +1,8 @@
 package com.example.stockinsight.ui.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stockinsight.databinding.FragmentHomeBinding
 import com.example.stockinsight.ui.adapter.MultiQuoteForHomePageAdapter
+import com.example.stockinsight.ui.adapter.SearchResultAdapter
 import com.example.stockinsight.ui.viewmodel.StockViewModel
 import com.example.stockinsight.ui.viewmodel.UserViewModel
 import com.example.stockinsight.utils.SessionManager
@@ -30,6 +33,7 @@ class HomeFragment : Fragment() {
     private val userViewModel: UserViewModel by viewModels()
     private val stockViewModel: StockViewModel by viewModels()
     private lateinit var multiQuoteForHomePageAdapter: MultiQuoteForHomePageAdapter
+    private lateinit var searchResultAdapter: SearchResultAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -61,6 +65,58 @@ class HomeFragment : Fragment() {
             val interval = "1m"
             val range = "1d"
             stockViewModel.getListQuotesForHomePage(symbols, interval, range)
+
+            binding.searchEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.toString().isNotEmpty()) {
+                        binding.recyclerSearchResults.visibility = View.VISIBLE
+                        binding.recyclerStock.visibility = View.GONE
+
+                        binding.recyclerSearchResults.visibility = View.VISIBLE
+                        searchResultAdapter = SearchResultAdapter(onItemClick = {
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToStockDetailFragment(it.quoteInfo.symbol)
+                            binding.root.findNavController().navigate(action)
+                        })
+                        binding.recyclerSearchResults.apply {
+                            setLayoutManager(LinearLayoutManager(requireContext()))
+                            setAdapter(searchResultAdapter)
+                        }
+                        stockViewModel.searchStocksByKeyword(s.toString(), interval, range)
+                        stockViewModel.searchResult.observe(viewLifecycleOwner) {
+                            when (it) {
+                                is UiState.Loading -> {
+                                    binding.progressSearchResults.visibility = View.VISIBLE
+                                }
+
+                                is UiState.Success -> {
+                                    if (it.data.isEmpty()) {
+                                        binding.txtNoResults.visibility = View.VISIBLE
+                                    } else {
+                                        binding.txtNoResults.visibility = View.GONE
+                                    }
+                                    binding.progressSearchResults.visibility = View.GONE
+                                    searchResultAdapter.submitList(it.data)
+                                }
+
+                                is UiState.Failure -> {
+                                    showDialog(it.message, "error", requireContext())
+                                }
+                            }
+                        }
+                    } else {
+                        binding.recyclerSearchResults.visibility = View.GONE
+                        binding.recyclerStock.visibility = View.VISIBLE
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
 
             setupRecyclerView()
             observer()

@@ -59,4 +59,10 @@
     <color name="light_green_300">#268EE04E</color>
     <color name="text_color">#121826</color>
     <color name="radio_button">#8EE04E</color>
+
+    <color name="search_bar_background">#FFFFFF</color>
+    <color name="search_bar_text">#000000</color>
+    <color name="search_bar_hint">#666666</color>
+    <color name="search_bar_icon">#666666</color>
+    <color name="search_bar_stroke">#DDDDDD</color>
 </resources>

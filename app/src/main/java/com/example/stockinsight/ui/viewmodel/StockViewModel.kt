@@ -31,6 +31,9 @@ class StockViewModel @Inject constructor(
     private val _removeStockResult = MutableLiveData<UiState<String>>()
     val removeStockResult: LiveData<UiState<String>> get() = _removeStockResult
 
+    private val _searchResult = MutableLiveData<UiState<ArrayList<FullStockInfo>>>()
+    val searchResult: LiveData<UiState<ArrayList<FullStockInfo>>> get() = _searchResult
+
     fun getListQuotesForHomePage(symbols: List<String>, interval: String, range: String) {
         _listQuotesForHomePage.value = UiState.Loading
         repository.getStockInfo(symbols, interval, range) {
@@ -50,6 +53,13 @@ class StockViewModel @Inject constructor(
         viewModelScope.launch {
             val result = repository.getStockInfoBySymbol(symbol, interval, range)
             _stockInfo.postValue(result)
+        }
+    }
+
+    fun searchStocksByKeyword(keyword: String, interval: String, range: String) {
+        _searchResult.value = UiState.Loading
+        repository.searchStocksByKeyword(keyword, interval, range) {
+            _searchResult.postValue(it)
         }
     }
 

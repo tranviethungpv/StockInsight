@@ -398,5 +398,7 @@ to login into Tradebase</string>
     <string name="lbl_all">ALL</string>
     <string name="set_notification">Set notification</string>
     <string name="remove_from_watchlist">Remove from watchlist</string>
+    <string name="search_here">Search here...</string>
+    <string name="lbl_no_results">No result</string>
 </resources>
 

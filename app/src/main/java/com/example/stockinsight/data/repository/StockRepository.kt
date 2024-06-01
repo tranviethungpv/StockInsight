@@ -18,5 +18,13 @@ interface StockRepository {
 
     suspend fun addStockToWatchlist(userId: String, symbol: String): UiState<String>
     suspend fun removeStockFromWatchlist(userId: String, symbol: String): UiState<String>
+
+    fun searchStocksByKeyword(
+        keyword: String,
+        interval: String,
+        range: String,
+        result: (UiState<ArrayList<FullStockInfo>>) -> Unit
+    )
+
     fun disconnect()
 }

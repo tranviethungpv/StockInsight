@@ -24,6 +24,7 @@ class StockImpl @Inject constructor(
         socketManager.addSocket("homepage")
         socketManager.addSocket("watchlist")
         socketManager.addSocket("specific")
+        socketManager.addSocket("search")
     }
 
     override fun getStockInfo(
@@ -153,6 +154,38 @@ class StockImpl @Inject constructor(
         }
     }
 
+    override fun searchStocksByKeyword(
+        keyword: String,
+        interval: String,
+        range: String,
+        result: (UiState<ArrayList<FullStockInfo>>) -> Unit
+    ) {
+        val data = JSONObject().apply {
+            put("keyword", keyword)
+            put("interval", interval)
+            put("range", range)
+        }
+
+        // Reopen the socket connection if needed
+        socketManager.reopenSocket("search")
+
+        // Emit the search request to the server
+        socketManager.emit("search", "stock_request_search", data)
+
+        // Listen for the response from the server
+        socketManager.on("search", "stock_update_search") { args ->
+            if (args.isNotEmpty()) {
+                val type = object : TypeToken<List<FullStockInfo>>() {}.type
+                val stockDataListFromServer =
+                    Gson().fromJson<List<FullStockInfo>>(args[0].toString(), type)
+                Log.d("StockImpl", "Search Stock data: ${stockDataListFromServer.size}")
+                result(UiState.Success(ArrayList(stockDataListFromServer)))
+            } else {
+                result(UiState.Failure("No data received from server"))
+            }
+        }
+    }
+
     private fun requestDataFromSocket(
         socketName: String,
         symbols: List<String>,
@@ -168,7 +201,7 @@ class StockImpl @Inject constructor(
             put("range", range)
         }
 
-        //socketManager.reopenSocket(socketName)
+        socketManager.reopenSocket(socketName)
         socketManager.emit(socketName, requestEvent, data)
 
         socketManager.on(socketName, updateEvent) { args ->

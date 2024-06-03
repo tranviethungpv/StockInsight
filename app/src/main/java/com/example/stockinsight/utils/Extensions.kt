@@ -1,8 +1,10 @@
 package com.example.stockinsight.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.stockinsight.R
@@ -203,5 +206,17 @@ fun formatNumber(number: Long): String {
         number >= 1_000_000 -> String.format("%.2fM", number / 1_000_000.0)
         number >= 1_000 -> String.format("%.2fK", number / 1_000.0)
         else -> number.toString()
+    }
+}
+
+fun requestManyPermissions(activity: Activity, permissions: Array<String>, requestCode: Int) {
+    val notGrantedPermissions = permissions.filter {
+        ContextCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED
+    }
+
+    if (notGrantedPermissions.isNotEmpty()) {
+        ActivityCompat.requestPermissions(
+            activity, notGrantedPermissions.toTypedArray(), requestCode
+        )
     }
 }

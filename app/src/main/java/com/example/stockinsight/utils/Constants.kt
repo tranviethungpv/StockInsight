@@ -2,6 +2,9 @@ package com.example.stockinsight.utils
 
 class Constants {
     companion object {
+        // Request permission code
+        const val REQUEST_CODE = 1
+
         const val RAPID_API_KEY = "X-RapidAPI-Key"
         const val RAPID_API_HOST = "X-RapidAPI-Host"
 //        const val RAPID_API_KEY_VALUE = "7636a42b52msha1d6a11d49bea1fp1d9efdjsnf5fee438cf48"

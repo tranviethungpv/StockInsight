@@ -6,11 +6,14 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import android.Manifest
 import com.example.stockinsight.R
+import com.example.stockinsight.utils.Constants
 import com.example.stockinsight.utils.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import com.example.stockinsight.utils.requestManyPermissions
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
@@ -115,5 +118,11 @@ class MainActivity : AppCompatActivity() {
                 else -> bottomNavigationViewLayout.visibility = View.VISIBLE
             }
         }
+
+        requestManyPermissions(
+            this, arrayOf(
+                Manifest.permission.POST_NOTIFICATIONS
+            ), Constants.REQUEST_CODE
+        )
     }
 }

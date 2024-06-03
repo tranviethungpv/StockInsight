@@ -57,18 +57,19 @@ class WatchlistFragment : Fragment() {
             val action =
                 WatchlistFragmentDirections.actionWatchlistFragmentToStockDetailFragment(it.quoteInfo.symbol)
             binding.root.findNavController().navigate(action)
-        }, onItemLongClick = { symbol, view ->
+        }, onItemLongClick = { stockInfo, view ->
             val popupMenu = PopupMenu(requireContext(), view)
             popupMenu.menuInflater.inflate(R.menu.watchlist_context_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.set_notification -> {
+                        // Handle set notification action here
                         true
                     }
 
                     R.id.delete -> {
                         stockViewModel.removeStockFromWatchlist(
-                            sessionManager.getUserId() ?: "", symbol.quoteInfo.symbol
+                            sessionManager.getUserId() ?: "", stockInfo.quoteInfo.symbol
                         )
                         true
                     }
@@ -96,7 +97,7 @@ class WatchlistFragment : Fragment() {
 
                 is UiState.Success -> {
                     if (state.data.isEmpty()) {
-                        Log.d("HomeFragment", "Data: ${state.data.size}")
+                        Log.d("WatchlistFragment", "Data: ${state.data.size}")
                         binding.linearWatchlistDataStatus.visibility = View.VISIBLE
                         binding.recyclerWatchlist.visibility = View.GONE
                     } else {
@@ -151,5 +152,10 @@ class WatchlistFragment : Fragment() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stockViewModel.closeSocket("watchlist")
     }
 }

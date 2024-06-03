@@ -1,12 +1,11 @@
 package com.example.stockinsight.data.repository
 
 import android.util.Log
-import com.example.stockinsight.data.model.User
+import com.example.stockinsight.data.model.WatchlistItem
 import com.example.stockinsight.data.model.stock.FullStockInfo
 import com.example.stockinsight.data.socket.SocketManager
 import com.example.stockinsight.utils.UiState
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -52,29 +51,28 @@ class StockImpl @Inject constructor(
             return
         }
 
-        val userRef = database.collection("users").document(userId)
-        userRef.get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject<User>()
-                val watchlist = user?.watchlist ?: emptyList()
+        val watchlistRef = database.collection("users").document(userId).collection("watchlist")
+        watchlistRef.get().addOnSuccessListener { querySnapshot ->
+            if (!querySnapshot.isEmpty) {
+                val watchlistItems = querySnapshot.toObjects(WatchlistItem::class.java)
+                val symbols = watchlistItems.map { it.symbol }
 
-                if (watchlist.isEmpty()) {
+                if (symbols.isEmpty()) {
                     result(UiState.Success(ArrayList()))
                     return@addOnSuccessListener
                 }
 
                 requestDataFromSocket(
                     "watchlist",
-                    watchlist,
+                    symbols,
                     "1m",
                     "1d",
                     "stock_request_watchlist",
                     "stock_update_watchlist",
                     result
                 )
-
             } else {
-                result(UiState.Failure("User does not exist"))
+                result(UiState.Failure("No watchlist items found"))
             }
         }.addOnFailureListener {
             result(UiState.Failure(it.message ?: "An error occurred"))
@@ -110,22 +108,20 @@ class StockImpl @Inject constructor(
         }
     }
 
-    override suspend fun addStockToWatchlist(userId: String, symbol: String): UiState<String> {
+    override suspend fun addStockToWatchlist(
+        userId: String, symbol: String, threshold: Double, lastNotifiedPrice: Double
+    ): UiState<String> {
         return try {
             val userRef = database.collection("users").document(userId)
-            val snapshot = userRef.get().await()
-            val user = snapshot.toObject<User>()
-            if (user != null) {
-                val watchlist = user.watchlist?.toMutableList()
-                if (!watchlist?.contains(symbol)!!) {
-                    watchlist.add(symbol)
-                    userRef.update("watchlist", watchlist).await()
-                    UiState.Success("Stock added to watchlist")
-                } else {
-                    UiState.Failure("Stock already in watchlist")
-                }
+            val watchlistRef = userRef.collection("watchlist").document(symbol)
+
+            val snapshot = watchlistRef.get().await()
+            if (!snapshot.exists()) {
+                val newWatchlistItem = WatchlistItem(symbol, threshold, lastNotifiedPrice)
+                watchlistRef.set(newWatchlistItem).await()
+                UiState.Success("Stock added to watchlist")
             } else {
-                UiState.Failure("User not found")
+                UiState.Failure("Stock already in watchlist")
             }
         } catch (e: Exception) {
             UiState.Failure(e.message ?: "An error occurred")
@@ -135,19 +131,14 @@ class StockImpl @Inject constructor(
     override suspend fun removeStockFromWatchlist(userId: String, symbol: String): UiState<String> {
         return try {
             val userRef = database.collection("users").document(userId)
-            val snapshot = userRef.get().await()
-            val user = snapshot.toObject<User>()
-            if (user != null) {
-                val watchlist = user.watchlist?.toMutableList()
-                if (watchlist?.contains(symbol)!!) {
-                    watchlist.remove(symbol)
-                    userRef.update("watchlist", watchlist).await()
-                    UiState.Success("Stock removed from watchlist")
-                } else {
-                    UiState.Failure("Stock not in watchlist")
-                }
+            val watchlistRef = userRef.collection("watchlist").document(symbol)
+
+            val snapshot = watchlistRef.get().await()
+            if (snapshot.exists()) {
+                watchlistRef.delete().await()
+                UiState.Success("Stock removed from watchlist")
             } else {
-                UiState.Failure("User not found")
+                UiState.Failure("Stock not in watchlist")
             }
         } catch (e: Exception) {
             UiState.Failure(e.message ?: "An error occurred")
@@ -211,6 +202,10 @@ class StockImpl @Inject constructor(
             Log.d("StockImpl", "Stock data: ${stockDataListFromServer.size}")
             result(UiState.Success(ArrayList(stockDataListFromServer)))
         }
+    }
+
+    override fun closeSocket(name: String) {
+        socketManager.closeSocket(name)
     }
 
     override fun disconnect() {

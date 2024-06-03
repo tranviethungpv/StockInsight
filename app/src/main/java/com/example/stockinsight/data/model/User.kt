@@ -15,7 +15,7 @@ data class User(
     val provider: String?,
     val providerId: String?,
     val token: String?,
-    val watchlist: List<String>?
+    val watchlist: List<WatchlistItem>?
 ) {
     constructor(): this(
         "",

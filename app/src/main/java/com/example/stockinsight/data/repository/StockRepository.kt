@@ -16,7 +16,7 @@ interface StockRepository {
         symbol: String, interval: String, range: String
     ): UiState<FullStockInfo>
 
-    suspend fun addStockToWatchlist(userId: String, symbol: String): UiState<String>
+    suspend fun addStockToWatchlist(userId: String, symbol: String, threshold: Double, lastNotifiedPrice: Double): UiState<String>
     suspend fun removeStockFromWatchlist(userId: String, symbol: String): UiState<String>
 
     fun searchStocksByKeyword(
@@ -25,6 +25,8 @@ interface StockRepository {
         range: String,
         result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     )
+
+    fun closeSocket(name: String)
 
     fun disconnect()
 }

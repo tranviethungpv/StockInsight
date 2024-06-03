@@ -37,7 +37,7 @@ class SocketManager @Inject constructor() {
         sockets[name]?.off(event, listener)
     }
 
-    private fun closeSocket(name: String) {
+    fun closeSocket(name: String) {
         sockets[name]?.let {
             it.disconnect()
             it.close()

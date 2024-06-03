@@ -25,11 +25,10 @@ class UserImpl @Inject constructor(
     }
 
     override suspend fun isSymbolInWatchlist(userId: String, symbol: String): Boolean {
-        val userDocument = database.collection("users").document(userId).get().await()
-        val user = userDocument.toObject(User::class.java)
-        user?.watchlist?.let {
-            return it.contains(symbol)
-        }
-        return false
+        val userRef = database.collection("users").document(userId)
+        val watchlistRef = userRef.collection("watchlist").document(symbol)
+
+        val snapshot = watchlistRef.get().await()
+        return snapshot.exists()
     }
 }

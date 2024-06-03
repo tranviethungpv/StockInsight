@@ -35,8 +35,7 @@ class SearchResultAdapter(
         }
     }
 
-    inner class SearchResultViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemHomePageStockBinding: ItemHomePageStockBinding =
             ItemHomePageStockBinding.bind(itemView)
 
@@ -45,6 +44,7 @@ class SearchResultAdapter(
         fun bind(multiQuoteForHomePage: FullStockInfo) {
             itemHomePageStockBinding.txtTWTR.text = multiQuoteForHomePage.quoteInfo.symbol
             itemHomePageStockBinding.txtTwitterInc.text = multiQuoteForHomePage.quoteInfo.longName
+
             if (multiQuoteForHomePage.quoteInfo.diff > 0) {
                 itemHomePageStockBinding.txtTwentyThreeOne.setTextColor(
                     itemView.context.resources.getColor(
@@ -60,6 +60,7 @@ class SearchResultAdapter(
                 )
                 itemHomePageStockBinding.imageSettings.setImageResource(R.drawable.img_settings_deep_orange_a200)
             }
+
             if (multiQuoteForHomePage.quoteInfo.currentPrice != 0.0) {
                 itemHomePageStockBinding.txtPrice.text =
                     String.format("%.2f", multiQuoteForHomePage.quoteInfo.currentPrice)
@@ -68,23 +69,26 @@ class SearchResultAdapter(
                     String.format("%.2f", multiQuoteForHomePage.quoteInfo.today)
             }
 
-            // bound stockHomePage.diff to 2 decimal places
+            // Bound stockHomePage.diff to 2 decimal places
             itemHomePageStockBinding.txtTwentyThreeOne.text =
                 String.format("%.2f", multiQuoteForHomePage.quoteInfo.diff)
 
-            val chartData = multiQuoteForHomePage.historicData.close
+            val chartData = multiQuoteForHomePage.historicData?.close
 
-            val entries = mutableListOf<Entry>()
-            chartData.let { closeData ->
-                for ((timestamp, value) in closeData) {
+            if (chartData != null) {
+                val entries = mutableListOf<Entry>()
+                for ((timestamp, value) in chartData) {
                     entries.add(Entry(timestamp.toFloat(), value.toFloat()))
                 }
-            }
-            if (multiQuoteForHomePage.quoteInfo.diff > 0) {
-                drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")
+                if (multiQuoteForHomePage.quoteInfo.diff > 0) {
+                    drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")
+                } else {
+                    // If the stock price is down, draw the line chart in red
+                    drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "down")
+                }
             } else {
-                // if the stock price is down, draw the line chart in red
-                drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "down")
+                // Handle case when chartData is null
+                itemHomePageStockBinding.imageChart.clear() // Clear the chart if no data
             }
         }
     }

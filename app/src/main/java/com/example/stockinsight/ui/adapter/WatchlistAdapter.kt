@@ -36,19 +36,19 @@ class WatchlistAdapter(
         }
         holder.itemView.setOnLongClickListener { view ->
             onItemLongClick(watchlistQuote, view)
-            true}
+            true
+        }
     }
 
     inner class WatchlistAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemHomePageStockBinding: ItemHomePageStockBinding =
             ItemHomePageStockBinding.bind(itemView)
 
-        @Suppress("DEPRECATION")
         @SuppressLint("DefaultLocale")
-        fun bind(multiQuoteForHomePage: FullStockInfo) {
-            itemHomePageStockBinding.txtTWTR.text = multiQuoteForHomePage.quoteInfo.symbol
-            itemHomePageStockBinding.txtTwitterInc.text = multiQuoteForHomePage.quoteInfo.longName
-            if (multiQuoteForHomePage.quoteInfo.diff > 0) {
+        fun bind(fullStockInfo: FullStockInfo) {
+            itemHomePageStockBinding.txtTWTR.text = fullStockInfo.quoteInfo.symbol
+            itemHomePageStockBinding.txtTwitterInc.text = fullStockInfo.quoteInfo.longName
+            if (fullStockInfo.quoteInfo.diff > 0) {
                 itemHomePageStockBinding.txtTwentyThreeOne.setTextColor(
                     itemView.context.resources.getColor(
                         R.color.light_green_500
@@ -63,19 +63,19 @@ class WatchlistAdapter(
                 )
                 itemHomePageStockBinding.imageSettings.setImageResource(R.drawable.img_settings_deep_orange_a200)
             }
-            if (multiQuoteForHomePage.quoteInfo.currentPrice != 0.0) {
+            if (fullStockInfo.quoteInfo.currentPrice != 0.0) {
                 itemHomePageStockBinding.txtPrice.text =
-                    String.format("%.2f", multiQuoteForHomePage.quoteInfo.currentPrice)
+                    String.format("%.2f", fullStockInfo.quoteInfo.currentPrice)
             } else {
                 itemHomePageStockBinding.txtPrice.text =
-                    String.format("%.2f", multiQuoteForHomePage.quoteInfo.today)
+                    String.format("%.2f", fullStockInfo.quoteInfo.today)
             }
 
             // bound stockHomePage.diff to 2 decimal places
             itemHomePageStockBinding.txtTwentyThreeOne.text =
-                String.format("%.2f", multiQuoteForHomePage.quoteInfo.diff)
+                String.format("%.2f", fullStockInfo.quoteInfo.diff)
 
-            val chartData = multiQuoteForHomePage.historicData.close
+            val chartData = fullStockInfo.historicData.close
 
             val entries = mutableListOf<Entry>()
             chartData.let { closeData ->
@@ -83,7 +83,7 @@ class WatchlistAdapter(
                     entries.add(Entry(timestamp.toFloat(), value.toFloat()))
                 }
             }
-            if (multiQuoteForHomePage.quoteInfo.diff > 0) {
+            if (fullStockInfo.quoteInfo.diff > 0) {
                 drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")
             } else {
                 // if the stock price is down, draw the line chart in red

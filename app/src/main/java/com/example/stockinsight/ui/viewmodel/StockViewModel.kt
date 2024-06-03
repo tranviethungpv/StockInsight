@@ -63,10 +63,10 @@ class StockViewModel @Inject constructor(
         }
     }
 
-    fun addStockToWatchlist(userId: String, symbol: String) {
+    fun addStockToWatchlist(userId: String, symbol: String, threshold: Double, lastNotifiedPrice: Double) {
         _addStockResult.value = UiState.Loading
         viewModelScope.launch {
-            val result = repository.addStockToWatchlist(userId, symbol)
+            val result = repository.addStockToWatchlist(userId, symbol, threshold, lastNotifiedPrice)
             _addStockResult.postValue(result)
         }
     }
@@ -77,5 +77,9 @@ class StockViewModel @Inject constructor(
             val result = repository.removeStockFromWatchlist(userId, symbol)
             _removeStockResult.postValue(result)
         }
+    }
+
+    fun closeSocket(name: String) {
+        repository.closeSocket(name)
     }
 }

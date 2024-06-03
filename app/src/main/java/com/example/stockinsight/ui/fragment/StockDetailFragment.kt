@@ -68,10 +68,16 @@ class StockDetailFragment : BottomSheetDialogFragment() {
                 if (isInWatchlist) {
                     stockViewModel.removeStockFromWatchlist(userId, stockSymbol)
                 } else {
-                    stockViewModel.addStockToWatchlist(userId, stockSymbol)
+                    // Assuming you have some predefined values for threshold and lastNotifiedPrice
+                    val threshold = 5.0  // Example threshold value
+                    val lastNotifiedPrice = 0.0  // Example initial value for last notified price
+
+                    // If these values come from user input, you can fetch them from the respective UI elements
+                    stockViewModel.addStockToWatchlist(userId, stockSymbol, threshold, lastNotifiedPrice)
                 }
             }
         }
+
 
         stockViewModel.addStockResult.observe(viewLifecycleOwner) { state ->
             when (state) {

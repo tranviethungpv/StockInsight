@@ -37,18 +37,24 @@ class SignInFragment : Fragment() {
 
         with(binding) {
             etInputsEmail.setOnFocusChangeListener { _, hasFocus ->
-                onFocusChange(hasFocus, linearColumnEmail, txtTitleEmail, etInputsEmail, "Email")
+                onFocusChange(
+                    hasFocus,
+                    linearColumnEmail,
+                    txtTitleEmail,
+                    etInputsEmail,
+                    getString(R.string.lbl_email_address)
+                )
             }
 
             etInputsPassword.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     relativeColumnPassword.setBackgroundResource(R.drawable.rectangle_border_light_green_500_radius_24)
                     txtTitlePassword.visibility = View.VISIBLE
-                    etInputsPassword.hint = ""
+                    etInputsPassword.hint = getString(R.string.blank)
                 } else {
                     relativeColumnPassword.setBackgroundResource(R.drawable.rectangle_border_radius_24)
                     txtTitlePassword.visibility = View.GONE
-                    etInputsPassword.hint = "Password"
+                    etInputsPassword.hint = getString(R.string.lbl_password)
                 }
             }
 
@@ -86,7 +92,7 @@ class SignInFragment : Fragment() {
 
             tvForgotPassword.setOnClickListener {
                 if (binding.etInputsEmail.text.isNullOrEmpty()) {
-                    showDialog("Email is required", "error", requireContext())
+                    showDialog(getString(R.string.email_is_required), "error", requireContext())
                     return@setOnClickListener
                 }
                 viewModel.forgotPassword(binding.etInputsEmail.text.toString())
@@ -106,7 +112,7 @@ class SignInFragment : Fragment() {
         if (hasFocus) {
             linearColumn.setBackgroundResource(R.drawable.rectangle_border_light_green_500_radius_24)
             txtTitle.visibility = View.VISIBLE
-            etInputs.hint = ""
+            etInputs.hint = getString(R.string.blank)
         } else {
             linearColumn.setBackgroundResource(R.drawable.rectangle_border_radius_24)
             txtTitle.visibility = View.GONE
@@ -133,7 +139,7 @@ class SignInFragment : Fragment() {
 
                 is UiState.Success -> {
                     binding.btnStart.text = getString(R.string.lbl_start)
-                    showDialog("Sign In Successful", "success", requireContext())
+                    showDialog(getString(R.string.sign_in_successful), "success", requireContext())
                     findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
                 }
             }
@@ -150,7 +156,9 @@ class SignInFragment : Fragment() {
 
                 is UiState.Success -> {
                     showDialog(
-                        "Password reset email sent successfully", "success", requireContext()
+                        getString(R.string.password_reset_email_sent_successfully),
+                        "success",
+                        requireContext()
                     )
                 }
             }
@@ -163,23 +171,27 @@ class SignInFragment : Fragment() {
         if (binding.etInputsEmail.text.isNullOrEmpty()) {
             isValid = false
             //binding.etInputsEmail.setBackgroundResource(R.drawable.rectangle_border_light_red_radius_24)
-            showDialog("Email is required", "error", requireContext())
+            showDialog(getString(R.string.email_is_required), "error", requireContext())
         } else {
             if (!binding.etInputsEmail.text.toString().isValidEmail()) {
                 isValid = false
                 //binding.etInputsEmail.setBackgroundResource(R.drawable.rectangle_border_light_red_radius_24)
-                showDialog("Invalid Email", "error", requireContext())
+                showDialog(getString(R.string.invalid_email), "error", requireContext())
             }
         }
         if (binding.etInputsPassword.text.isNullOrEmpty()) {
             isValid = false
             //binding.etInputsPassword.setBackgroundResource(R.drawable.rectangle_border_light_red_radius_24)
-            showDialog("Password is required", "error", requireContext())
+            showDialog(getString(R.string.password_is_required), "error", requireContext())
         } else {
             if (binding.etInputsPassword.text.toString().length < 8) {
                 isValid = false
                 //binding.etInputsPassword.setBackgroundResource(R.drawable.rectangle_border_light_red_radius_24)
-                showDialog("Password must be at least 8 characters", "error", requireContext())
+                showDialog(
+                    getString(R.string.password_must_be_at_least_8_characters),
+                    "error",
+                    requireContext()
+                )
             }
         }
         return isValid

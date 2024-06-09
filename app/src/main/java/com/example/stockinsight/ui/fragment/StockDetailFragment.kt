@@ -17,6 +17,7 @@ import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.drawFullLineChart
 import com.example.stockinsight.utils.formatNumber
 import com.example.stockinsight.utils.showDialog
+import com.example.stockinsight.utils.startStockPriceService
 import com.github.mikephil.charting.data.Entry
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +55,9 @@ class StockDetailFragment : BottomSheetDialogFragment() {
         veil()
         binding.rgChartMode.check(R.id.ro_1d)
         stockViewModel.getStockInfoBySymbol(stockSymbol, "1m", "1d")
-        userViewModel.checkSymbolInWatchlist(session.getUserId() ?: "", stockSymbol)
+        userViewModel.checkSymbolInWatchlist(
+            session.getUserId() ?: getString(R.string.blank), stockSymbol
+        )
 
         observerStockInfo()
         observerIsSymbolInWatchlist()
@@ -69,11 +72,13 @@ class StockDetailFragment : BottomSheetDialogFragment() {
                     stockViewModel.removeStockFromWatchlist(userId, stockSymbol)
                 } else {
                     // Assuming you have some predefined values for threshold and lastNotifiedPrice
-                    val threshold = 5.0  // Example threshold value
+                    val threshold = 0.0  // Example threshold value
                     val lastNotifiedPrice = 0.0  // Example initial value for last notified price
 
                     // If these values come from user input, you can fetch them from the respective UI elements
-                    stockViewModel.addStockToWatchlist(userId, stockSymbol, threshold, lastNotifiedPrice)
+                    stockViewModel.addStockToWatchlist(
+                        userId, stockSymbol, threshold, lastNotifiedPrice
+                    )
                 }
             }
         }
@@ -86,8 +91,15 @@ class StockDetailFragment : BottomSheetDialogFragment() {
                 }
 
                 is UiState.Success -> {
-                    showDialog("Add to watchlist successfully", "success", requireContext())
-                    userViewModel.checkSymbolInWatchlist(session.getUserId() ?: "", stockSymbol)
+                    showDialog(
+                        getString(R.string.add_to_watchlist_successfully),
+                        "success",
+                        requireContext()
+                    )
+                    userViewModel.checkSymbolInWatchlist(
+                        session.getUserId() ?: getString(R.string.blank), stockSymbol
+                    )
+                    startStockPriceService(requireContext())
                     unVeil()
                 }
 
@@ -105,8 +117,14 @@ class StockDetailFragment : BottomSheetDialogFragment() {
                 }
 
                 is UiState.Success -> {
-                    showDialog("Removed from watchlist successfully", "success", requireContext())
-                    userViewModel.checkSymbolInWatchlist(session.getUserId() ?: "", stockSymbol)
+                    showDialog(
+                        getString(R.string.removed_from_watchlist_successfully),
+                        "success",
+                        requireContext()
+                    )
+                    userViewModel.checkSymbolInWatchlist(
+                        session.getUserId() ?: getString(R.string.blank), stockSymbol
+                    )
                     unVeil()
                 }
 

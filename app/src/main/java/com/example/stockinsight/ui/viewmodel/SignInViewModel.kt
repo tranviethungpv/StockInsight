@@ -20,6 +20,9 @@ class SignInViewModel
     private val _forgotPassword = MutableLiveData<UiState<String>>()
     val forgotPassword: LiveData<UiState<String>> get() = _forgotPassword
 
+    private val _checkPassword = MutableLiveData<UiState<Boolean>>()
+    val checkPassword: LiveData<UiState<Boolean>> get() = _checkPassword
+
     fun signInUser(email: String, password: String) {
         _signIn.value = UiState.Loading
         repository.signInUser(
@@ -27,7 +30,7 @@ class SignInViewModel
             password,
         ) {
             if (it is UiState.Success) {
-                sessionManager.saveLoginSession(it.data)
+                sessionManager.saveLoginSession(it.data, email)
             }
             _signIn.value = it
         }
@@ -36,6 +39,12 @@ class SignInViewModel
     fun forgotPassword(email: String) {
         repository.forgotPassword(email) {
             _forgotPassword.value = it
+        }
+    }
+
+    fun checkPassword(email: String, currentPassword: String) {
+        repository.checkPassword(email, currentPassword) {
+            _checkPassword.value = it
         }
     }
 }

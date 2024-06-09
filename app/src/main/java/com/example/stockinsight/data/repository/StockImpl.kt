@@ -1,6 +1,8 @@
 package com.example.stockinsight.data.repository
 
+import android.content.Context
 import android.util.Log
+import com.example.stockinsight.R
 import com.example.stockinsight.data.model.WatchlistItem
 import com.example.stockinsight.data.model.stock.FullStockInfo
 import com.example.stockinsight.data.socket.SocketManager
@@ -16,7 +18,9 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 
 class StockImpl @Inject constructor(
-    private val database: FirebaseFirestore, private val socketManager: SocketManager
+    private val context: Context,
+    private val database: FirebaseFirestore,
+    private val socketManager: SocketManager
 ) : StockRepository {
 
     init {
@@ -47,7 +51,7 @@ class StockImpl @Inject constructor(
         userId: String?, result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     ) {
         if (userId == null) {
-            result(UiState.Failure("User ID is null"))
+            result(UiState.Failure(context.getString(R.string.user_id_null)))
             return
         }
 
@@ -72,10 +76,10 @@ class StockImpl @Inject constructor(
                     result
                 )
             } else {
-                result(UiState.Failure("No watchlist items found"))
+                result(UiState.Failure(context.getString(R.string.no_watchlist_items_found)))
             }
         }.addOnFailureListener {
-            result(UiState.Failure(it.message ?: "An error occurred"))
+            result(UiState.Failure(it.message ?: context.getString(R.string.an_error_occurred)))
         }
     }
 
@@ -101,7 +105,7 @@ class StockImpl @Inject constructor(
                             Gson().fromJson(args[0].toString(), FullStockInfo::class.java)
                         continuation.resume(UiState.Success(stockDataFromServer))
                     } else {
-                        continuation.resume(UiState.Failure("No data received from server"))
+                        continuation.resume(UiState.Failure(context.getString(R.string.no_data_received_from_server)))
                     }
                 }
             }
@@ -119,12 +123,12 @@ class StockImpl @Inject constructor(
             if (!snapshot.exists()) {
                 val newWatchlistItem = WatchlistItem(symbol, threshold, lastNotifiedPrice)
                 watchlistRef.set(newWatchlistItem).await()
-                UiState.Success("Stock added to watchlist")
+                UiState.Success(context.getString(R.string.stock_added_to_watchlist))
             } else {
-                UiState.Failure("Stock already in watchlist")
+                UiState.Failure(context.getString(R.string.stock_already_in_watchlist))
             }
         } catch (e: Exception) {
-            UiState.Failure(e.message ?: "An error occurred")
+            UiState.Failure(e.message ?: context.getString(R.string.an_error_occurred))
         }
     }
 
@@ -136,12 +140,12 @@ class StockImpl @Inject constructor(
             val snapshot = watchlistRef.get().await()
             if (snapshot.exists()) {
                 watchlistRef.delete().await()
-                UiState.Success("Stock removed from watchlist")
+                UiState.Success(context.getString(R.string.stock_removed_from_watchlist))
             } else {
-                UiState.Failure("Stock not in watchlist")
+                UiState.Failure(context.getString(R.string.stock_not_in_watchlist))
             }
         } catch (e: Exception) {
-            UiState.Failure(e.message ?: "An error occurred")
+            UiState.Failure(e.message ?: context.getString(R.string.an_error_occurred))
         }
     }
 
@@ -172,8 +176,27 @@ class StockImpl @Inject constructor(
                 Log.d("StockImpl", "Search Stock data: ${stockDataListFromServer.size}")
                 result(UiState.Success(ArrayList(stockDataListFromServer)))
             } else {
-                result(UiState.Failure("No data received from server"))
+                result(UiState.Failure(context.getString(R.string.no_data_received_from_server)))
             }
+        }
+    }
+
+    override suspend fun updateThreshold(
+        userId: String, symbol: String, threshold: Double
+    ): UiState<String> {
+        return try {
+            val userRef = database.collection("users").document(userId)
+            val watchlistRef = userRef.collection("watchlist").document(symbol)
+
+            val snapshot = watchlistRef.get().await()
+            if (snapshot.exists()) {
+                watchlistRef.update("threshold", threshold).await()
+                UiState.Success(context.getString(R.string.threshold_updated_successfully))
+            } else {
+                UiState.Failure(context.getString(R.string.stock_not_in_watchlist))
+            }
+        } catch (e: Exception) {
+            UiState.Failure(e.message ?: context.getString(R.string.an_error_occurred))
         }
     }
 

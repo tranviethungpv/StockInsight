@@ -34,6 +34,9 @@ class StockViewModel @Inject constructor(
     private val _searchResult = MutableLiveData<UiState<ArrayList<FullStockInfo>>>()
     val searchResult: LiveData<UiState<ArrayList<FullStockInfo>>> get() = _searchResult
 
+    private val _updateThresholdResult = MutableLiveData<UiState<String>>()
+    val updateThresholdResult: LiveData<UiState<String>> get() = _updateThresholdResult
+
     fun getListQuotesForHomePage(symbols: List<String>, interval: String, range: String) {
         _listQuotesForHomePage.value = UiState.Loading
         repository.getStockInfo(symbols, interval, range) {
@@ -76,6 +79,14 @@ class StockViewModel @Inject constructor(
         viewModelScope.launch {
             val result = repository.removeStockFromWatchlist(userId, symbol)
             _removeStockResult.postValue(result)
+        }
+    }
+
+    fun updateThreshold(userId: String, symbol: String, threshold: Double) {
+        _updateThresholdResult.value = UiState.Loading
+        viewModelScope.launch {
+            val result = repository.updateThreshold(userId, symbol, threshold)
+            _updateThresholdResult.postValue(result)
         }
     }
 

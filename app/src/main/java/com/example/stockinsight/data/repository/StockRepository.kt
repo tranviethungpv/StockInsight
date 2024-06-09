@@ -26,6 +26,8 @@ interface StockRepository {
         result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     )
 
+    suspend fun updateThreshold(userId: String, symbol: String, threshold: Double): UiState<String>
+
     fun closeSocket(name: String)
 
     fun disconnect()

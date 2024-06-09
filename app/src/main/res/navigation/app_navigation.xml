@@ -92,15 +92,20 @@
             app:destination="@id/stockDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/newsFragment"
-        android:name="com.example.stockinsight.ui.fragment.NewsFragment"
-        android:label="fragment_news"
-        tools:layout="@layout/fragment_news" />
-    <fragment
-        android:id="@+id/userFragment"
-        android:name="com.example.stockinsight.ui.fragment.UserFragment"
+        android:id="@+id/settingsFragment"
+        android:name="com.example.stockinsight.ui.fragment.SettingsFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_themeSettingFragment"
+            app:destination="@id/themeSettingFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_languageSettingFragment"
+            app:destination="@id/languageSettingFragment" />
+    </fragment>
     <dialog
         android:id="@+id/stockDetailFragment"
         android:name="com.example.stockinsight.ui.fragment.StockDetailFragment"
@@ -109,4 +114,23 @@
             android:name="stockSymbol"
             app:argType="string" />
     </dialog>
+    <dialog
+        android:id="@+id/themeSettingFragment"
+        android:name="com.example.stockinsight.ui.fragment.ThemeSettingFragment"
+        android:label="fragment_theme_setting"
+        tools:layout="@layout/fragment_theme_setting" />
+    <dialog
+        android:id="@+id/accountFragment"
+        android:name="com.example.stockinsight.ui.fragment.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_accountFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/languageSettingFragment"
+        android:name="com.example.stockinsight.ui.fragment.LanguageSettingFragment"
+        android:label="fragment_language_setting"
+        tools:layout="@layout/fragment_language_setting" />
 </navigation>

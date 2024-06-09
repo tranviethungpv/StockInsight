@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,11 +15,10 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.example.stockinsight.R
+import com.example.stockinsight.service.StockPriceService
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -29,10 +29,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-fun Fragment.toast(msg: String?) {
-    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
-}
 
 fun String.isValidEmail() =
     isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
@@ -219,4 +215,9 @@ fun requestManyPermissions(activity: Activity, permissions: Array<String>, reque
             activity, notGrantedPermissions.toTypedArray(), requestCode
         )
     }
+}
+
+fun startStockPriceService(context: Context) {
+    val serviceIntent = Intent(context, StockPriceService::class.java)
+    context.startForegroundService(serviceIntent)
 }

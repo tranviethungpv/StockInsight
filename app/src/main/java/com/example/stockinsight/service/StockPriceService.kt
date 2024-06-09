@@ -1,5 +1,6 @@
 package com.example.stockinsight.service
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -40,7 +41,9 @@ class StockPriceService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        startForeground(1, createNotification("Stock Price Service Running"))
+        startForeground(
+            1, createNotification(getString(R.string.stock_price_service_running))
+        )
         socketManager.addSocket("notification")
         Log.d("StockPriceService", "Service created and socket added")
     }
@@ -91,9 +94,9 @@ class StockPriceService : Service() {
             this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
         )
 
-        return NotificationCompat.Builder(this, channelId).setContentTitle("Stock Price Service")
-            .setContentText(content).setSmallIcon(R.drawable.ic_notification)
-            .setContentIntent(pendingIntent).build()
+        return NotificationCompat.Builder(this, channelId)
+            .setContentTitle(getString(R.string.app_name)).setContentText(content)
+            .setSmallIcon(R.drawable.ic_notification).setContentIntent(pendingIntent).build()
     }
 
     private fun fetchWatchlistForNotification(
@@ -109,7 +112,10 @@ class StockPriceService : Service() {
 
         val watchlistRef = firestore.collection("users").document(userId).collection("watchlist")
         watchlistRef.get().addOnSuccessListener { querySnapshot ->
-            Log.d("StockPriceService", "Watchlist query success, documents found: ${querySnapshot.documents.size}")
+            Log.d(
+                "StockPriceService",
+                "Watchlist query success, documents found: ${querySnapshot.documents.size}"
+            )
             if (!querySnapshot.isEmpty) {
                 val watchlistItems = querySnapshot.toObjects(WatchlistItem::class.java)
                 val symbols = watchlistItems.map { it.symbol }
@@ -166,7 +172,8 @@ class StockPriceService : Service() {
         socketManager.on(socketName, updateEvent) { args ->
             Log.d("StockPriceService", "Received $updateEvent: ${args[0]}")
             val type = object : TypeToken<List<FullStockInfo>>() {}.type
-            val stockDataListFromServer = Gson().fromJson<List<FullStockInfo>>(args[0].toString(), type)
+            val stockDataListFromServer =
+                Gson().fromJson<List<FullStockInfo>>(args[0].toString(), type)
             result(ArrayList(stockDataListFromServer))
         }
     }
@@ -174,18 +181,30 @@ class StockPriceService : Service() {
     private fun handleStockData(stockDataList: ArrayList<FullStockInfo>) {
         for (stockData in stockDataList) {
             val symbol = stockData.quoteInfo.symbol
-            val currentPrice = stockData.quoteInfo.currentPrice
+            val currentPrice: Double = if (stockData.quoteInfo.currentPrice.toInt() != 0) {
+                stockData.quoteInfo.currentPrice
+            } else {
+                stockData.quoteInfo.today
+            }
             val previousPrice = previousPrices[symbol]
             val threshold = thresholds[symbol]
 
-            Log.d("StockPriceService", "Handling stock data for $symbol: currentPrice=$currentPrice, previousPrice=$previousPrice, threshold=$threshold")
+            Log.d(
+                "StockPriceService",
+                "Handling stock data for $symbol: currentPrice=$currentPrice, previousPrice=$previousPrice, threshold=$threshold"
+            )
 
             if (previousPrice != null && threshold != null) {
-                val priceChange = abs(currentPrice - previousPrice)
+                if (threshold > 0) {
+                    val priceChange = abs(currentPrice - previousPrice)
 
-                if (priceChange >= threshold) {
-                    Log.d("StockPriceService", "Price change for $symbol exceeds threshold. Sending notification.")
-                    sendNotification(symbol, currentPrice)
+                    if (priceChange >= threshold) {
+                        Log.d(
+                            "StockPriceService",
+                            "Price change for $symbol exceeds threshold. Sending notification."
+                        )
+                        sendNotification(symbol, currentPrice)
+                    }
                 }
             }
 
@@ -193,11 +212,26 @@ class StockPriceService : Service() {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun sendNotification(symbol: String, newPrice: Double) {
-        val notification = createNotification("The price of $symbol has changed to $newPrice")
+        val previousPrice = previousPrices[symbol]
+        val priceChange = if (previousPrice != null) newPrice - previousPrice else 0.0
+        val formattedNewPrice = String.format("%.2f", newPrice)
+        val formattedPriceChange = String.format("%.2f", priceChange)
+
+        val notification = createNotification(
+            getString(R.string.the_price_of) + symbol + getString(
+                R.string.has_changed_to
+            ) + formattedNewPrice + getString(R.string.dot) + getString(
+                R.string.change
+            ) + formattedPriceChange
+        )
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(symbol.hashCode(), notification)
-        Log.d("StockPriceService", "Sent notification for $symbol: newPrice=$newPrice")
+        Log.d(
+            "StockPriceService",
+            "Sent notification for $symbol: newPrice=$formattedNewPrice, change=$formattedPriceChange"
+        )
     }
 }

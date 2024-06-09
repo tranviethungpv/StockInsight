@@ -1,5 +1,6 @@
 package com.example.stockinsight.di
 
+import android.content.Context
 import com.example.stockinsight.data.repository.AuthenticationImpl
 import com.example.stockinsight.data.repository.AuthenticationRepository
 import com.example.stockinsight.data.repository.StockImpl
@@ -12,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -21,24 +23,24 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        auth: FirebaseAuth, database: FirebaseFirestore
+        @ApplicationContext context: Context, auth: FirebaseAuth, database: FirebaseFirestore
     ): AuthenticationRepository {
-        return AuthenticationImpl(auth, database)
+        return AuthenticationImpl(context, auth, database)
     }
 
     @Provides
     @Singleton
     fun provideUserRepository(
-        database: FirebaseFirestore
+        @ApplicationContext context: Context, database: FirebaseFirestore, auth: FirebaseAuth
     ): UserRepository {
-        return UserImpl(database)
+        return UserImpl(context, database, auth)
     }
 
     @Provides
     @Singleton
     fun provideStockRepository(
-        database: FirebaseFirestore, socketManager: SocketManager
+        @ApplicationContext context: Context, database: FirebaseFirestore, socketManager: SocketManager
     ): StockRepository {
-        return StockImpl(database, socketManager)
+        return StockImpl(context, database, socketManager)
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.stockinsight.data.model.Issue
 import com.example.stockinsight.data.model.User
 import com.example.stockinsight.data.repository.UserRepository
 import com.example.stockinsight.utils.UiState
@@ -21,6 +22,12 @@ class UserViewModel @Inject constructor(
 
     private val _isSymbolInWatchlist = MutableLiveData<Boolean>()
     val isSymbolInWatchlist: LiveData<Boolean> get() = _isSymbolInWatchlist
+
+    private val _sendIssue = MutableLiveData<UiState<String>>()
+    val sendIssue: LiveData<UiState<String>> get() = _sendIssue
+
+    private val _changePassword = MutableLiveData<UiState<String>>()
+    val changePassword: LiveData<UiState<String>> get() = _changePassword
 
     fun fetchUser() {
         val userId = auth.currentUser?.uid
@@ -48,6 +55,20 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             val isInWatchlist = userRepository.isSymbolInWatchlist(userId, symbol)
             _isSymbolInWatchlist.postValue(isInWatchlist)
+        }
+    }
+
+    fun sendIssue(issue: Issue) {
+        viewModelScope.launch {
+            val result = userRepository.sendIssue(issue)
+            _sendIssue.postValue(result)
+        }
+    }
+
+    fun changePassword(email: String, newPassword: String) {
+        viewModelScope.launch {
+            val result = userRepository.changePassword(email, newPassword)
+            _changePassword.postValue(result)
         }
     }
 }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/groupStyleBackgroundDialog"
+    tools:context=".ui.fragment.AccountFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_account_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15pxh"
+        android:layout_marginTop="@dimen/_15pxh"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_theme_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:fontFamily="@font/eudoxus_sans"
+            android:text="@string/account_setting"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30pxh"
+        android:layout_marginTop="10dp"
+        android:text="@string/lbl_username"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_account_setting" />
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30pxh"
+        android:layout_marginTop="3dp"
+        android:text="@string/lbl_email_address"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="@dimen/_35pxv"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rectangle_bg_light_green_500_90_radius_24"
+        android:fontFamily="@font/eudoxus_sans"
+        android:paddingStart="@dimen/_15pxv"
+        android:paddingTop="@dimen/_5pxv"
+        android:paddingEnd="@dimen/_15pxh"
+        android:paddingBottom="@dimen/_5pxv"
+        android:singleLine="true"
+        android:text="@string/change_password"
+        android:textAllCaps="false"
+        android:textColor="@color/light_green_900"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_marginHorizontal="@dimen/_35pxv"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rectangle_bg_light_red_radius_24"
+        android:fontFamily="@font/eudoxus_sans"
+        android:paddingStart="@dimen/_15pxv"
+        android:paddingTop="@dimen/_5pxv"
+        android:paddingEnd="@dimen/_15pxh"
+        android:paddingBottom="@dimen/_5pxv"
+        android:singleLine="true"
+        android:text="@string/lbl_logout"
+        android:textAllCaps="false"
+        android:textColor="@color/white_A700"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_change_password" />
+</androidx.constraintlayout.widget.ConstraintLayout>

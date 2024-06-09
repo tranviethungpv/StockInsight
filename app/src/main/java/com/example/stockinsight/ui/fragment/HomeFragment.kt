@@ -1,6 +1,5 @@
 package com.example.stockinsight.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,12 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stockinsight.R
 import com.example.stockinsight.databinding.FragmentHomeBinding
-import com.example.stockinsight.service.StockPriceService
 import com.example.stockinsight.ui.adapter.MultiQuoteForHomePageAdapter
 import com.example.stockinsight.ui.adapter.SearchResultAdapter
 import com.example.stockinsight.ui.viewmodel.StockViewModel
@@ -22,6 +20,7 @@ import com.example.stockinsight.ui.viewmodel.UserViewModel
 import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.isNetworkAvailable
 import com.example.stockinsight.utils.showDialog
+import com.example.stockinsight.utils.startStockPriceService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -119,11 +118,10 @@ class HomeFragment : Fragment() {
             setupRecyclerView()
             observer()
 
-            val serviceIntent = Intent(requireContext(), StockPriceService::class.java)
-            startForegroundService(requireContext(), serviceIntent)
+            startStockPriceService(requireContext())
 
         } else {
-            showDialog("No internet connection", "error", requireContext())
+            showDialog(getString(R.string.no_internet_connection), "error", requireContext())
         }
     }
 

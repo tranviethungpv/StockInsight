@@ -1,10 +1,16 @@
 package com.example.stockinsight.ui.fragment
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +24,7 @@ import com.example.stockinsight.utils.SessionManager
 import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.isNetworkAvailable
 import com.example.stockinsight.utils.showDialog
+import com.example.stockinsight.utils.startStockPriceService
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.reflect.Method
 import javax.inject.Inject
@@ -48,7 +55,7 @@ class WatchlistFragment : Fragment() {
             setupRecyclerView()
             observer()
         } else {
-            showDialog("No internet connection", "error", requireContext())
+            showDialog(getString(R.string.no_internet_connection), "error", requireContext())
         }
     }
 
@@ -63,13 +70,49 @@ class WatchlistFragment : Fragment() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.set_notification -> {
-                        // Handle set notification action here
+                        val dialog = Dialog(requireContext())
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        dialog.setContentView(R.layout.dialog_set_threshold)
+
+                        val window = dialog.window
+
+                        window?.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                        dialog.findViewById<Button>(R.id.btnCancel).setOnClickListener {
+                            dialog.dismiss()
+                        }
+
+                        dialog.findViewById<Button>(R.id.btnOk).setOnClickListener {
+                            val thresholdText =
+                                dialog.findViewById<EditText>(R.id.etInputsThreshold).text.toString()
+                            try {
+                                val threshold = thresholdText.toDouble()
+                                stockViewModel.updateThreshold(
+                                    sessionManager.getUserId() ?: "",
+                                    stockInfo.quoteInfo.symbol,
+                                    threshold
+                                )
+                                dialog.dismiss()
+                            } catch (e: NumberFormatException) {
+                                showDialog(
+                                    getString(R.string.please_enter_a_valid_number_for_the_threshold),
+                                    "error",
+                                    requireContext()
+                                )
+                            }
+                        }
+
+                        dialog.show()
                         true
                     }
 
                     R.id.delete -> {
                         stockViewModel.removeStockFromWatchlist(
-                            sessionManager.getUserId() ?: "", stockInfo.quoteInfo.symbol
+                            sessionManager.getUserId() ?: getString(R.string.blank),
+                            stockInfo.quoteInfo.symbol
                         )
                         true
                     }
@@ -121,14 +164,39 @@ class WatchlistFragment : Fragment() {
                 }
 
                 is UiState.Success -> {
-                    showDialog("Removed from watchlist successfully", "success", requireContext())
+                    showDialog(
+                        getString(R.string.removed_from_watchlist_successfully),
+                        "success",
+                        requireContext()
+                    )
                     stockViewModel.getListQuotesForWatchlist(sessionManager.getUserId())
+                    startStockPriceService(requireContext())
                     binding.recyclerWatchlist.unVeil()
                 }
 
                 is UiState.Failure -> {
                     showDialog(state.message, "error", requireContext())
                     binding.recyclerWatchlist.unVeil()
+                }
+            }
+        }
+
+        stockViewModel.updateThresholdResult.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                }
+
+                is UiState.Success -> {
+                    showDialog(
+                        getString(R.string.threshold_updated_successfully),
+                        "success",
+                        requireContext()
+                    )
+                    startStockPriceService(requireContext())
+                }
+
+                is UiState.Failure -> {
+                    showDialog(state.message, "error", requireContext())
                 }
             }
         }

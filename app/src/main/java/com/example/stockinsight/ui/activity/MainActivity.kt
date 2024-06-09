@@ -7,6 +7,8 @@ import android.widget.LinearLayout
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.stockinsight.R
 import com.example.stockinsight.utils.Constants
 import com.example.stockinsight.utils.SessionManager
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var sessionManager: SessionManager
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,8 +50,7 @@ class MainActivity : AppCompatActivity() {
             val itemOrder = mapOf(
                 R.id.home to 1,
                 R.id.watchlist to 2,
-                R.id.news to 3,
-                R.id.user to 4
+                R.id.user to 3
             )
 
             val selectedOrder = itemOrder[it.itemId]
@@ -92,14 +94,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.news -> {
-                    navController.navigate(R.id.newsFragment, null, navOptions)
-                    currentOrder = itemOrder[it.itemId] ?: currentOrder // Update currentOrder
-                    true
-                }
-
                 R.id.user -> {
-                    navController.navigate(R.id.userFragment, null, navOptions)
+                    navController.navigate(R.id.settingsFragment, null, navOptions)
                     currentOrder = itemOrder[it.itemId] ?: currentOrder // Update currentOrder
                     true
                 }

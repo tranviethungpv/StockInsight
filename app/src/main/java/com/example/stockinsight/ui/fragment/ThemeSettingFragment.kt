@@ -27,31 +27,36 @@ class ThemeSettingFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var selectedThemeMode =
+            sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
         binding.roSystemDefault.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                sharedPreferences.edit()
-                    .putInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM).apply()
+                selectedThemeMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             }
         }
 
         binding.roLight.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                sharedPreferences.edit().putInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
-                    .apply()
+                selectedThemeMode = AppCompatDelegate.MODE_NIGHT_NO
             }
         }
 
         binding.roDark.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                sharedPreferences.edit().putInt("theme_mode", AppCompatDelegate.MODE_NIGHT_YES)
-                    .apply()
+                selectedThemeMode = AppCompatDelegate.MODE_NIGHT_YES
             }
         }
 
+        when (selectedThemeMode) {
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> binding.roSystemDefault.isChecked = true
+            AppCompatDelegate.MODE_NIGHT_NO -> binding.roLight.isChecked = true
+            AppCompatDelegate.MODE_NIGHT_YES -> binding.roDark.isChecked = true
+        }
+
         binding.btnOk.setOnClickListener {
-            val themeMode =
-                sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            AppCompatDelegate.setDefaultNightMode(themeMode)
+            sharedPreferences.edit().putInt("theme_mode", selectedThemeMode).apply()
+            AppCompatDelegate.setDefaultNightMode(selectedThemeMode)
             dismiss()
         }
     }

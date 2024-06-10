@@ -29,16 +29,23 @@ class LanguageSettingFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var selectedLanguage = sharedPreferences.getString("selected_language", "SYSTEM_DEFAULT")
+        when (selectedLanguage) {
+            "SYSTEM_DEFAULT" -> binding.roSystemDefault.isChecked = true
+            "vi" -> binding.roVietnamese.isChecked = true
+            "en" -> binding.roEnglish.isChecked = true
+        }
+
         binding.btnOk.setOnClickListener {
-            val selectedLanguage = when (binding.rgChartMode.checkedRadioButtonId) {
-                R.id.ro_system_default -> Locale.getDefault().language
+            selectedLanguage = when (binding.rgChartMode.checkedRadioButtonId) {
+                R.id.ro_system_default -> "SYSTEM_DEFAULT"
                 R.id.ro_vietnamese -> "vi"
                 R.id.ro_english -> "en"
-                else -> Locale.getDefault().language
+                else -> "SYSTEM_DEFAULT"
             }
 
             sharedPreferences.edit().putString("selected_language", selectedLanguage).apply()
-            changeLocale(selectedLanguage)
+            changeLocale(selectedLanguage!!)
         }
     }
 
@@ -48,7 +55,9 @@ class LanguageSettingFragment : BottomSheetDialogFragment() {
         Locale.setDefault(locale)
         val config = Configuration()
         config.setLocale(locale)
-        context?.resources?.updateConfiguration(config, context?.resources?.displayMetrics)
+        requireActivity().applicationContext.resources?.updateConfiguration(
+            config, context?.resources?.displayMetrics
+        )
 
         // Restart the activity to apply changes
         activity?.recreate()

@@ -50,7 +50,6 @@
     <string name="symbol">Symbol</string>
     <string name="company_name">Company name</string>
     <string name="blank_value">00.00</string>
-    <string name="blank" />
     <string name="no_watchlist_data">No watchlist data</string>
     <string name="add_item_to_watchlist">Add item to watchlist</string>
     <string name="add_quote">Add quote</string>
@@ -61,6 +60,7 @@
     <string name="today_low">Today\'s Low</string>
     <string name="ratio">P/E</string>
     <string name="null_value">-</string>
+    <string name="blank"/>
     <string name="_52_week_high">52-Week High</string>
     <string name="_52_week_low">52-Week Low</string>
     <string name="average_volume">Avg. Volume</string>

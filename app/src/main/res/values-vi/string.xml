@@ -50,7 +50,6 @@
     <string name="symbol">Mã cổ phiếu</string>
     <string name="company_name">Tên công ty</string>
     <string name="blank_value">00.00</string>
-    <string name="blank" />
     <string name="no_watchlist_data">Không có dữ liệu danh sách theo dõi</string>
     <string name="add_item_to_watchlist">Thêm vào danh sách theo dõi</string>
     <string name="add_quote">Thêm báo giá</string>
@@ -58,6 +57,7 @@
     <string name="default_name">Tên công ty</string>
     <string name="today_open">Giá mở cửa hôm nay</string>
     <string name="today_high">Giá cao nhất hôm nay</string>
+    <string name="blank"/>
     <string name="today_low">Giá thấp nhất hôm nay</string>
     <string name="ratio">P/E</string>
     <string name="null_value">-</string>

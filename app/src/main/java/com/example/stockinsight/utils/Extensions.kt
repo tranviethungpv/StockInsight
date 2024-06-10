@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
@@ -220,4 +221,21 @@ fun requestManyPermissions(activity: Activity, permissions: Array<String>, reque
 fun startStockPriceService(context: Context) {
     val serviceIntent = Intent(context, StockPriceService::class.java)
     context.startForegroundService(serviceIntent)
+}
+
+fun applyLocale(context: Context): Context {
+    val prefs = context.getSharedPreferences("language_prefs", Context.MODE_PRIVATE)
+    var selectedLanguage = prefs.getString("selected_language", "SYSTEM_DEFAULT")
+
+    if (selectedLanguage == "SYSTEM_DEFAULT") {
+        selectedLanguage = Locale.getDefault().language
+    }
+
+    val locale = Locale(selectedLanguage!!)
+    Locale.setDefault(locale)
+
+    val config = Configuration(context.resources.configuration)
+    config.setLocale(locale)
+
+    return context.createConfigurationContext(config)
 }

@@ -14,6 +14,7 @@ import com.example.stockinsight.data.model.stock.FullStockInfo
 import com.example.stockinsight.data.socket.SocketManager
 import com.example.stockinsight.ui.activity.MainActivity
 import com.example.stockinsight.utils.SessionManager
+import com.example.stockinsight.utils.applyLocale
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,18 +38,24 @@ class StockPriceService : Service() {
     private val channelId = "StockPriceServiceChannel"
     private val previousPrices = mutableMapOf<String, Double>()
     private val thresholds = mutableMapOf<String, Double>()
+    private lateinit var updatedContext: Context
 
     override fun onCreate() {
         super.onCreate()
+
+        updatedContext = applyLocale(this)
+
         createNotificationChannel()
         startForeground(
-            1, createNotification(getString(R.string.stock_price_service_running))
+            1, createNotification(updatedContext.getString(R.string.stock_price_service_running))
         )
         socketManager.addSocket("notification")
         Log.d("StockPriceService", "Service created and socket added")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        updatedContext = applyLocale(this)
+
         val userId = sessionManager.getUserId()
         Log.d("StockPriceService", "onStartCommand called with userId: $userId")
 
@@ -95,8 +102,8 @@ class StockPriceService : Service() {
         )
 
         return NotificationCompat.Builder(this, channelId)
-            .setContentTitle(getString(R.string.app_name)).setContentText(content)
-            .setSmallIcon(R.drawable.ic_notification).setContentIntent(pendingIntent).build()
+            .setContentTitle(updatedContext.getString(R.string.app_name)).setContentText(content)
+            .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(pendingIntent).build()
     }
 
     private fun fetchWatchlistForNotification(
@@ -220,11 +227,11 @@ class StockPriceService : Service() {
         val formattedPriceChange = String.format("%.2f", priceChange)
 
         val notification = createNotification(
-            getString(R.string.the_price_of) + symbol + getString(
+            updatedContext.getString(R.string.the_price_of) + " " + symbol + " " + updatedContext.getString(
                 R.string.has_changed_to
-            ) + formattedNewPrice + getString(R.string.dot) + getString(
+            ) + " " + formattedNewPrice + updatedContext.getString(R.string.dot) + " " + updatedContext.getString(
                 R.string.change
-            ) + formattedPriceChange
+            ) + " " + formattedPriceChange
         )
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

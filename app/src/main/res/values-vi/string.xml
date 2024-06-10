@@ -80,7 +80,7 @@
     <string name="lbl_no_results">Không có kết quả</string>
     <string name="on">Bật</string>
     <string name="off">Tắt</string>
-    <string name="enter_new_threshold">Nhập ngưỡng mới</string>
+    <string name="enter_new_threshold">Nhập ngưỡng mới (%)</string>
     <string name="cancel">Hủy</string>
     <string name="input_0_to_disable_notification">* Nhập 0 để tắt thông báo</string>
     <string name="version">Phiên bản 1.0.0</string>

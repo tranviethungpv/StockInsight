@@ -75,20 +75,19 @@ class WatchlistAdapter(
             itemHomePageStockBinding.txtTwentyThreeOne.text =
                 String.format("%.2f", fullStockInfo.quoteInfo.diff)
 
-            val chartData = fullStockInfo.historicData.close
+            val chartData = fullStockInfo.historicData?.close
 
-            val entries = mutableListOf<Entry>()
-            chartData.let { closeData ->
+            chartData?.let { closeData ->
+                val entries = mutableListOf<Entry>()
                 for ((timestamp, value) in closeData) {
                     entries.add(Entry(timestamp.toFloat(), value.toFloat()))
                 }
-            }
-            if (fullStockInfo.quoteInfo.diff > 0) {
-                drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")
-            } else {
-                // if the stock price is down, draw the line chart in red
-                drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "down")
-            }
+                if (fullStockInfo.quoteInfo.diff > 0) {
+                    drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")
+                } else {
+                    drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "down")
+                }
+            } ?: itemHomePageStockBinding.imageChart.clear() // Clear the chart if data is null
         }
     }
 

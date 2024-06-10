@@ -80,7 +80,7 @@
     <string name="lbl_no_results">No result</string>
     <string name="on">On</string>
     <string name="off">Off</string>
-    <string name="enter_new_threshold">Enter new threshold</string>
+    <string name="enter_new_threshold">Enter new threshold (%)</string>
     <string name="cancel">Cancel</string>
     <string name="input_0_to_disable_notification">* Input 0 to disable notification</string>
     <string name="version">Version 1.0.0</string>

@@ -36,8 +36,8 @@ class StockPriceService : Service() {
     lateinit var sessionManager: SessionManager
 
     private val channelId = "StockPriceServiceChannel"
-    private val previousPrices = mutableMapOf<String, Double>()
     private val thresholds = mutableMapOf<String, Double>()
+    private val lastPriceChange = mutableMapOf<String, Double>()
     private lateinit var updatedContext: Context
 
     override fun onCreate() {
@@ -193,45 +193,51 @@ class StockPriceService : Service() {
             } else {
                 stockData.quoteInfo.today
             }
-            val previousPrice = previousPrices[symbol]
+            val closePrice = stockData.quoteInfo.previousClose
             val threshold = thresholds[symbol]
 
             Log.d(
                 "StockPriceService",
-                "Handling stock data for $symbol: currentPrice=$currentPrice, previousPrice=$previousPrice, threshold=$threshold"
+                "Handling stock data for $symbol: currentPrice=$currentPrice, closePrice=$closePrice, threshold=$threshold"
             )
 
-            if (previousPrice != null && threshold != null) {
-                if (threshold > 0) {
-                    val priceChange = abs(currentPrice - previousPrice)
+            if (threshold != null && threshold != 0.0) {
+                val priceChange = currentPrice - closePrice
+                val priceChangePercent = abs(priceChange) / closePrice * 100
 
-                    if (priceChange >= threshold) {
-                        Log.d(
-                            "StockPriceService",
-                            "Price change for $symbol exceeds threshold. Sending notification."
-                        )
-                        sendNotification(symbol, currentPrice)
-                    }
+                // Check if the price change percentage exceeds the threshold and the price change is different from last recorded
+                if (priceChangePercent >= threshold && priceChange != lastPriceChange[symbol]) {
+                    Log.d(
+                        "StockPriceService",
+                        "Price change for $symbol exceeds threshold. Sending notification."
+                    )
+                    sendNotification(symbol, currentPrice, closePrice)
+                    // Update lastPriceChange map with new change
+                    lastPriceChange[symbol] = priceChange
+                } else {
+                    Log.d(
+                        "StockPriceService",
+                        "No significant change or same change as before. No notification sent for $symbol."
+                    )
                 }
             }
-
-            previousPrices[symbol] = currentPrice
         }
     }
 
     @SuppressLint("DefaultLocale")
-    private fun sendNotification(symbol: String, newPrice: Double) {
-        val previousPrice = previousPrices[symbol]
-        val priceChange = if (previousPrice != null) newPrice - previousPrice else 0.0
+    private fun sendNotification(symbol: String, newPrice: Double, closePrice: Double) {
+        val priceChange = newPrice - closePrice
+        val percentPriceChange = priceChange / closePrice * 100
         val formattedNewPrice = String.format("%.2f", newPrice)
         val formattedPriceChange = String.format("%.2f", priceChange)
+        val formattedPercentPriceChange = String.format("%.2f", percentPriceChange)
 
         val notification = createNotification(
             updatedContext.getString(R.string.the_price_of) + " " + symbol + " " + updatedContext.getString(
                 R.string.has_changed_to
             ) + " " + formattedNewPrice + updatedContext.getString(R.string.dot) + " " + updatedContext.getString(
                 R.string.change
-            ) + " " + formattedPriceChange
+            ) + " " + formattedPriceChange + " (" + formattedPercentPriceChange + "%)"
         )
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

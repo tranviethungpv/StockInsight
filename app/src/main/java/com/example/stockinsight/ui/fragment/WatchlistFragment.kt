@@ -1,5 +1,6 @@
 package com.example.stockinsight.ui.fragment
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -110,10 +111,14 @@ class WatchlistFragment : Fragment() {
                     }
 
                     R.id.delete -> {
-                        stockViewModel.removeStockFromWatchlist(
-                            sessionManager.getUserId() ?: getString(R.string.blank),
-                            stockInfo.quoteInfo.symbol
-                        )
+                        AlertDialog.Builder(requireContext()).setTitle(getString(R.string.delete_watchlist))
+                            .setMessage(getString(R.string.delete_watchlist_message))
+                            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                                stockViewModel.removeStockFromWatchlist(
+                                    sessionManager.getUserId() ?: getString(R.string.blank),
+                                    stockInfo.quoteInfo.symbol
+                                )
+                            }.setNegativeButton(getString(R.string.no), null).show()
                         true
                     }
 
@@ -153,6 +158,7 @@ class WatchlistFragment : Fragment() {
 
                 is UiState.Failure -> {
                     showDialog(state.message, "error", requireContext())
+                    binding.recyclerWatchlist.unVeil()
                 }
             }
         }

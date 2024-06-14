@@ -37,9 +37,9 @@ class StockViewModel @Inject constructor(
     private val _updateThresholdResult = MutableLiveData<UiState<String>>()
     val updateThresholdResult: LiveData<UiState<String>> get() = _updateThresholdResult
 
-    fun getListQuotesForHomePage(symbols: List<String>, interval: String, range: String) {
+    fun getListQuotesForHomePage(symbols: List<String>, range: String) {
         _listQuotesForHomePage.value = UiState.Loading
-        repository.getStockInfo(symbols, interval, range) {
+        repository.getStockInfo(symbols, range) {
             _listQuotesForHomePage.postValue(it)
         }
     }
@@ -51,17 +51,17 @@ class StockViewModel @Inject constructor(
         }
     }
 
-    fun getStockInfoBySymbol(symbol: String, interval: String, range: String) {
+    fun getStockInfoBySymbol(symbol: String, range: String) {
         _stockInfo.value = UiState.Loading
         viewModelScope.launch {
-            val result = repository.getStockInfoBySymbol(symbol, interval, range)
+            val result = repository.getStockInfoBySymbol(symbol, range)
             _stockInfo.postValue(result)
         }
     }
 
-    fun searchStocksByKeyword(keyword: String, interval: String, range: String) {
+    fun searchStocksByKeyword(keyword: String, range: String) {
         _searchResult.value = UiState.Loading
-        repository.searchStocksByKeyword(keyword, interval, range) {
+        repository.searchStocksByKeyword(keyword, range) {
             _searchResult.postValue(it)
         }
     }

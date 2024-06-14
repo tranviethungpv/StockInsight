@@ -1,31 +1,51 @@
-<LinearLayout style="@style/groupStyleSplashScreen"
-    android:gravity="center_horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear10SplashScre"
-    android:layout_height="match_parent"
+    style="@style/groupStyleSplashScreen"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/imageLogo"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/_250pxh"
         android:layout_height="@dimen/_48pxh"
-        android:layout_marginEnd="@dimen/_67pxh"
+        android:layout_gravity="center_horizontal"
         android:layout_marginStart="@dimen/_68pxh"
         android:layout_marginTop="@dimen/_236pxv"
-        android:layout_width="@dimen/_240pxh"
+        android:layout_marginEnd="@dimen/_67pxh"
+        android:orientation="horizontal"
         android:scaleType="fitXY"
-        android:src="@drawable/img_logo"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/img_logo" />
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="@dimen/_50pxh"
+            android:layout_height="@dimen/_48pxh"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/ic_launcher"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/text_color"
+            android:text="@string/app_name"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ImageView
-        android:gravity="start"
         android:id="@+id/imageChart"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_404pxv"
         android:layout_marginTop="@dimen/_80pxv"
-        android:layout_width="match_parent"
+        android:gravity="start"
         android:scaleType="fitXY"
         android:src="@drawable/img_chart"
         tools:ignore="ContentDescription" />

@@ -104,6 +104,45 @@
                 android:text="@string/english"
                 android:textAlignment="textStart"
                 android:textColor="@color/text_color" />
+
+            <RadioButton
+                android:id="@+id/ro_japanese"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_2pxh"
+                android:background="@drawable/radio_selector_3"
+                android:button="@android:color/transparent"
+                android:fontFamily="@font/eudoxus_sans"
+                android:paddingHorizontal="@dimen/_15pxh"
+                android:text="@string/japanese"
+                android:textAlignment="textStart"
+                android:textColor="@color/text_color" />
+
+            <RadioButton
+                android:id="@+id/ro_korean"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_2pxh"
+                android:background="@drawable/radio_selector_3"
+                android:button="@android:color/transparent"
+                android:fontFamily="@font/eudoxus_sans"
+                android:paddingHorizontal="@dimen/_15pxh"
+                android:text="@string/korean"
+                android:textAlignment="textStart"
+                android:textColor="@color/text_color" />
+
+            <RadioButton
+                android:id="@+id/ro_chinese"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_2pxh"
+                android:background="@drawable/radio_selector_3"
+                android:button="@android:color/transparent"
+                android:fontFamily="@font/eudoxus_sans"
+                android:paddingHorizontal="@dimen/_15pxh"
+                android:text="@string/chinese"
+                android:textAlignment="textStart"
+                android:textColor="@color/text_color" />
         </RadioGroup>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

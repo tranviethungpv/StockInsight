@@ -34,6 +34,9 @@ class LanguageSettingFragment : BottomSheetDialogFragment() {
             "SYSTEM_DEFAULT" -> binding.roSystemDefault.isChecked = true
             "vi" -> binding.roVietnamese.isChecked = true
             "en" -> binding.roEnglish.isChecked = true
+            "ja" -> binding.roJapanese.isChecked = true
+            "ko" -> binding.roKorean.isChecked = true
+            "zh" -> binding.roChinese.isChecked = true
         }
 
         binding.btnOk.setOnClickListener {
@@ -41,6 +44,9 @@ class LanguageSettingFragment : BottomSheetDialogFragment() {
                 R.id.ro_system_default -> "SYSTEM_DEFAULT"
                 R.id.ro_vietnamese -> "vi"
                 R.id.ro_english -> "en"
+                R.id.ro_japanese -> "ja"
+                R.id.ro_korean -> "ko"
+                R.id.ro_chinese -> "zh"
                 else -> "SYSTEM_DEFAULT"
             }
 

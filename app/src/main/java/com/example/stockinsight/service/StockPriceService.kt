@@ -71,7 +71,6 @@ class StockPriceService : Service() {
             requestDataFromSocket(
                 "notification",
                 symbols,
-                "1m",
                 "1d",
                 "stock_request_notification",
                 "stock_update_notification"
@@ -140,7 +139,6 @@ class StockPriceService : Service() {
                 requestDataFromSocket(
                     "watchlist",
                     symbols,
-                    "1m",
                     "1d",
                     "stock_request_notification",
                     "stock_update_notification",
@@ -159,7 +157,6 @@ class StockPriceService : Service() {
     private fun requestDataFromSocket(
         socketName: String,
         symbols: List<String>,
-        interval: String,
         range: String,
         requestEvent: String,
         updateEvent: String,
@@ -167,7 +164,6 @@ class StockPriceService : Service() {
     ) {
         val data = JSONObject().apply {
             put("symbols", JSONArray(symbols))
-            put("interval", interval)
             put("range", range)
         }
 

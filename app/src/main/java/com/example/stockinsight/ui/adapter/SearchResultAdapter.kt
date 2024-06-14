@@ -78,7 +78,9 @@ class SearchResultAdapter(
             if (chartData != null) {
                 val entries = mutableListOf<Entry>()
                 for ((timestamp, value) in chartData) {
-                    entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                    if (value != null) {
+                        entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                    }
                 }
                 if (multiQuoteForHomePage.quoteInfo.diff > 0) {
                     drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")

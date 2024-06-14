@@ -229,18 +229,7 @@
                     android:background="@drawable/radio_selector_3"
                     android:button="@android:color/transparent"
                     android:layout_marginHorizontal="@dimen/_2pxh"
-                    android:text="@string/lbl_1w" />
-
-                <RadioButton
-                    android:id="@+id/ro_1m"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_color"
-                    android:background="@drawable/radio_selector_3"
-                    android:button="@android:color/transparent"
-                    android:layout_marginHorizontal="@dimen/_2pxh"
-                    android:text="@string/lbl_1m" />
+                    android:text="@string/lbl_5d" />
 
                 <RadioButton
                     android:id="@+id/ro_3m"
@@ -285,39 +274,6 @@
                     android:button="@android:color/transparent"
                     android:layout_marginHorizontal="@dimen/_2pxh"
                     android:text="@string/lbl_1y" />
-
-                <RadioButton
-                    android:id="@+id/ro_2y"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_color"
-                    android:background="@drawable/radio_selector_3"
-                    android:button="@android:color/transparent"
-                    android:layout_marginHorizontal="@dimen/_2pxh"
-                    android:text="@string/lbl_2y" />
-
-                <RadioButton
-                    android:id="@+id/ro_5y"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_color"
-                    android:background="@drawable/radio_selector_3"
-                    android:button="@android:color/transparent"
-                    android:layout_marginHorizontal="@dimen/_2pxh"
-                    android:text="@string/lbl_5y" />
-
-                <RadioButton
-                    android:id="@+id/ro_10y"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_color"
-                    android:background="@drawable/radio_selector_3"
-                    android:button="@android:color/transparent"
-                    android:layout_marginHorizontal="@dimen/_2pxh"
-                    android:text="@string/lbl_10y" />
 
                 <RadioButton
                     android:id="@+id/ro_all"

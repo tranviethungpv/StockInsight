@@ -59,9 +59,7 @@ class HomeFragment : Fragment() {
                 "^N225",
                 "^GSPC"
             )
-            val interval = "1m"
-            val range = "1d"
-            stockViewModel.getListQuotesForHomePage(symbols, interval, range)
+            stockViewModel.getListQuotesForHomePage(symbols, "1d")
 
             binding.searchEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -70,6 +68,8 @@ class HomeFragment : Fragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    binding.progressSearchResults.visibility = View.GONE
+                    binding.recyclerSearchResults.visibility = View.GONE
                     if (s.toString().isNotEmpty()) {
                         binding.recyclerSearchResults.visibility = View.VISIBLE
                         binding.recyclerStock.visibility = View.GONE
@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
                             setLayoutManager(LinearLayoutManager(requireContext()))
                             setAdapter(searchResultAdapter)
                         }
-                        stockViewModel.searchStocksByKeyword(s.toString(), interval, range)
+                        stockViewModel.searchStocksByKeyword(s.toString(), "1d")
                         stockViewModel.searchResult.observe(viewLifecycleOwner) {
                             when (it) {
                                 is UiState.Loading -> {
@@ -102,7 +102,8 @@ class HomeFragment : Fragment() {
                                 }
 
                                 is UiState.Failure -> {
-                                    showDialog(it.message, "error", requireContext())
+                                    stockViewModel.searchStocksByKeyword(s.toString(), "5d")
+//                                    showDialog(it.message, "error", requireContext())
                                 }
                             }
                         }

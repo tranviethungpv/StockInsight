@@ -6,14 +6,13 @@ import com.example.stockinsight.utils.UiState
 interface StockRepository {
     fun getStockInfo(
         symbols: List<String>,
-        interval: String,
         range: String,
         result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     )
 
     fun fetchWatchlist(userId: String?, result: (UiState<ArrayList<FullStockInfo>>) -> Unit)
     suspend fun getStockInfoBySymbol(
-        symbol: String, interval: String, range: String
+        symbol: String, range: String
     ): UiState<FullStockInfo>
 
     suspend fun addStockToWatchlist(userId: String, symbol: String, threshold: Double, lastNotifiedPrice: Double): UiState<String>
@@ -21,7 +20,6 @@ interface StockRepository {
 
     fun searchStocksByKeyword(
         keyword: String,
-        interval: String,
         range: String,
         result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     )

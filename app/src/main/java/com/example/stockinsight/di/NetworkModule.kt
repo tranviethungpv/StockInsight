@@ -1,18 +1,11 @@
 package com.example.stockinsight.di
 
-import com.example.stockinsight.data.remote.YFinanceApi
-import com.example.stockinsight.data.remote.YahooFinanceApi
 import com.example.stockinsight.data.socket.SocketManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import com.example.stockinsight.utils.Constants
-import javax.inject.Named
 
 @InstallIn(SingletonComponent::class)
 @Module

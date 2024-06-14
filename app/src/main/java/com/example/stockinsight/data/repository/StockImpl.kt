@@ -9,6 +9,7 @@ import com.example.stockinsight.data.socket.SocketManager
 import com.example.stockinsight.utils.UiState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
@@ -31,19 +32,10 @@ class StockImpl @Inject constructor(
     }
 
     override fun getStockInfo(
-        symbols: List<String>,
-        interval: String,
-        range: String,
-        result: (UiState<ArrayList<FullStockInfo>>) -> Unit
+        symbols: List<String>, range: String, result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     ) {
         requestDataFromSocket(
-            "homepage",
-            symbols,
-            interval,
-            range,
-            "stock_request_homepage",
-            "stock_update_homepage",
-            result
+            "homepage", symbols, range, "stock_request_homepage", "stock_update_homepage", result
         )
     }
 
@@ -69,7 +61,6 @@ class StockImpl @Inject constructor(
                 requestDataFromSocket(
                     "watchlist",
                     symbols,
-                    "1m",
                     "1d",
                     "stock_request_watchlist",
                     "stock_update_watchlist",
@@ -84,11 +75,10 @@ class StockImpl @Inject constructor(
     }
 
     override suspend fun getStockInfoBySymbol(
-        symbol: String, interval: String, range: String
+        symbol: String, range: String
     ): UiState<FullStockInfo> {
         val data = JSONObject().apply {
             put("symbol", symbol)
-            put("interval", interval)
             put("range", range)
         }
 
@@ -150,14 +140,10 @@ class StockImpl @Inject constructor(
     }
 
     override fun searchStocksByKeyword(
-        keyword: String,
-        interval: String,
-        range: String,
-        result: (UiState<ArrayList<FullStockInfo>>) -> Unit
+        keyword: String, range: String, result: (UiState<ArrayList<FullStockInfo>>) -> Unit
     ) {
         val data = JSONObject().apply {
             put("keyword", keyword)
-            put("interval", interval)
             put("range", range)
         }
 
@@ -171,14 +157,20 @@ class StockImpl @Inject constructor(
         socketManager.on("search", "stock_update_search") { args ->
             if (args.isNotEmpty()) {
                 val type = object : TypeToken<List<FullStockInfo>>() {}.type
-                val stockDataListFromServer =
-                    Gson().fromJson<List<FullStockInfo>>(args[0].toString(), type)
-                Log.d("StockImpl", "Search Stock data: ${stockDataListFromServer.size}")
-                result(UiState.Success(ArrayList(stockDataListFromServer)))
+                try {
+                    val stockDataListFromServer =
+                        Gson().fromJson<List<FullStockInfo>>(args[0].toString(), type)
+                    Log.d("StockImpl", "Search Stock data: ${stockDataListFromServer.size}")
+                    result(UiState.Success(ArrayList(stockDataListFromServer)))
+                } catch (e: JsonSyntaxException) {
+                    Log.e("StockImpl", "Json parsing error: ${e.localizedMessage}")
+                    result(UiState.Failure(context.getString(R.string.error_parsing_data)))
+                }
             } else {
                 result(UiState.Failure(context.getString(R.string.no_data_received_from_server)))
             }
         }
+
     }
 
     override suspend fun updateThreshold(
@@ -203,7 +195,6 @@ class StockImpl @Inject constructor(
     private fun requestDataFromSocket(
         socketName: String,
         symbols: List<String>,
-        interval: String,
         range: String,
         requestEvent: String,
         updateEvent: String,
@@ -211,7 +202,6 @@ class StockImpl @Inject constructor(
     ) {
         val data = JSONObject().apply {
             put("symbols", JSONArray(symbols))
-            put("interval", interval)
             put("range", range)
         }
 

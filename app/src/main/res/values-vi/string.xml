@@ -31,7 +31,7 @@
     <string name="msg_welcome_back_y">Chào mừng trở lại, chúng tôi đã nhớ bạn!</string>
     <string name="msg_dont_s_have_an">Không có tài khoản? Đăng ký</string>
     <string name="lbl_login">Đăng nhập</string>
-    <string name="msg_welcome_to_trad">Chào mừng đến với Tradebase</string>
+    <string name="msg_welcome_to_trad">Chào mừng đến với Stock Insight</string>
     <string name="lbl_full_name">Họ và tên</string>
     <string name="hello_blank_fragment">Xin chào, fragment trống</string>
     <string name="enter_email">Vui lòng nhập email</string>
@@ -153,4 +153,11 @@
     <string name="please_enter_a_valid_number_for_the_threshold">Vui lòng nhập một số hợp lệ cho ngưỡng</string>
     <string name="vietnamese">Tiếng Việt</string>
     <string name="english">Tiếng Anh</string>
+    <string name="lbl_5d">5D</string>
+    <string name="error_parsing_data">Xảy ra lỗi khi chuyển đổi dữ liệu</string>
+    <string name="delete_watchlist">Xóa watchlist</string>
+    <string name="delete_watchlist_message">Bạn muốn xóa mã chứng khoán này?</string>
+    <string name="japanese">Tiếng Nhật</string>
+    <string name="korean">Tiếng Hàn</string>
+    <string name="chinese">Tiếng Trung</string>
 </resources>

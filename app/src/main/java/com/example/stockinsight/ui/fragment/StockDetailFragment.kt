@@ -54,7 +54,7 @@ class StockDetailFragment : BottomSheetDialogFragment() {
 
         veil()
         binding.rgChartMode.check(R.id.ro_1d)
-        stockViewModel.getStockInfoBySymbol(stockSymbol, "1m", "1d")
+        stockViewModel.getStockInfoBySymbol(stockSymbol, "1d")
         userViewModel.checkSymbolInWatchlist(
             session.getUserId() ?: getString(R.string.blank), stockSymbol
         )
@@ -143,14 +143,10 @@ class StockDetailFragment : BottomSheetDialogFragment() {
             chartMode = when (checkedId) {
                 R.id.ro_1d -> "1d"
                 R.id.ro_1w -> "5d"
-                R.id.ro_1m -> "1mo"
                 R.id.ro_3m -> "3mo"
                 R.id.ro_6m -> "6mo"
                 R.id.ro_ytd -> "ytd"
                 R.id.ro_1y -> "1y"
-                R.id.ro_2y -> "2y"
-                R.id.ro_5y -> "5y"
-                R.id.ro_10y -> "10y"
                 R.id.ro_all -> "max"
                 else -> "1d"
             }
@@ -158,27 +154,10 @@ class StockDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun getIntervalForPeriod(period: String): String {
-        return when (period) {
-            "1d" -> "1m"
-            "5d" -> "5m"
-            "1mo" -> "1h"
-            "3mo" -> "1d"
-            "6mo" -> "1d"
-            "ytd" -> "1d"
-            "1y" -> "1d"
-            "2y" -> "1d"
-            "5y" -> "1d"
-            "10y" -> "1d"
-            "max" -> "1mo"
-            else -> "1d"
-        }
-    }
-
     private fun updateChartData(period: String) {
         // Update the stock information based on the selected period
         veil()
-        stockViewModel.getStockInfoBySymbol(stockSymbol, getIntervalForPeriod(period), period)
+        stockViewModel.getStockInfoBySymbol(stockSymbol, period)
     }
 
     @Suppress("DEPRECATION")
@@ -238,7 +217,8 @@ class StockDetailFragment : BottomSheetDialogFragment() {
                     val entries = mutableListOf<Entry>()
                     chartData.let { closeData ->
                         for ((timestamp, value) in closeData) {
-                            entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                            value?.toFloat()?.let { Entry(timestamp.toFloat(), it) }
+                                ?.let { entries.add(it) }
                         }
                     }
                     if (state.data.quoteInfo.diff > 0) {

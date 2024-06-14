@@ -74,21 +74,19 @@ class MultiQuoteForHomePageAdapter(
 
             val chartData = multiQuoteForHomePage.historicData?.close
 
-            if (chartData != null) {
+            chartData?.let { closeData ->
                 val entries = mutableListOf<Entry>()
-                for ((timestamp, value) in chartData) {
-                    entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                for ((timestamp, value) in closeData) {
+                    if (value != null) {
+                        entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                    }
                 }
                 if (multiQuoteForHomePage.quoteInfo.diff > 0) {
                     drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")
                 } else {
-                    // If the stock price is down, draw the line chart in red
                     drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "down")
                 }
-            } else {
-                // Handle case when chartData is null
-                itemHomePageStockBinding.imageChart.clear() // Clear the chart if no data
-            }
+            } ?: itemHomePageStockBinding.imageChart.clear() // Clear the chart if data is null
         }
     }
 

@@ -13,6 +13,7 @@ import com.example.stockinsight.databinding.ItemHomePageStockBinding
 import com.example.stockinsight.utils.drawSimpleLineChart
 import com.github.mikephil.charting.data.Entry
 
+@Suppress("DEPRECATION")
 class WatchlistAdapter(
     private val onItemClick: (FullStockInfo) -> Unit,
     private val onItemLongClick: (FullStockInfo, View) -> Unit
@@ -80,7 +81,9 @@ class WatchlistAdapter(
             chartData?.let { closeData ->
                 val entries = mutableListOf<Entry>()
                 for ((timestamp, value) in closeData) {
-                    entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                    if (value != null) {
+                        entries.add(Entry(timestamp.toFloat(), value.toFloat()))
+                    }
                 }
                 if (fullStockInfo.quoteInfo.diff > 0) {
                     drawSimpleLineChart(itemHomePageStockBinding.imageChart, entries, "up")

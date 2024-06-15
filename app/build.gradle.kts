@@ -69,4 +69,5 @@ dependencies {
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation ("com.github.skydoves:androidveil:1.1.3")
     implementation ("io.socket:socket.io-client:2.0.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 }

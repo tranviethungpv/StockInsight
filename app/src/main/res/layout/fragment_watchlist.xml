@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/groupStyleBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/groupStyleBackground"
     tools:context=".ui.fragment.WatchlistFragment">
+
+    <ProgressBar
+        android:id="@+id/progressBarWatchlist"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <TextView
+        android:id="@+id/txtWatchlistDataStatus"
+        style="@style/txtEudoxusSansregular14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_watchlist_data"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
 
     <LinearLayout
         android:id="@+id/linearTitleWatchlist"
@@ -36,48 +59,23 @@
             tools:text="@string/lbl_your_watchlist" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearWatchlistDataStatus"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:gravity="center_horizontal|center_vertical"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearTitleWatchlist">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_watchlist_data"
-            style="@style/txtEudoxusSansregular14"/>
-    </LinearLayout>
-
-    <com.skydoves.androidveil.VeilRecyclerFrameView
-        android:id="@+id/recyclerWatchlist"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-       android:layout_marginBottom="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearTitleWatchlist"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:veilFrame_baseAlpha="0.6"
-        app:veilFrame_baseColor="@android:color/darker_gray"
-        app:veilFrame_highlightAlpha="1.0"
-        app:veilFrame_highlightColor="@android:color/white"
-        app:veilFrame_isItemWrapContentHeight="true"
-        app:veilFrame_isItemWrapContentWidth="false"
-        app:veilFrame_layout="@layout/item_home_page_stock"
-        app:veilFrame_radius="8dp"
-        app:veilFrame_shimmerEnable="true"
-        app:veilFrame_veiled="true" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerWatchlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

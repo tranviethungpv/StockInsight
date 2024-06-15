@@ -18,6 +18,7 @@ import com.example.stockinsight.ui.adapter.SearchResultAdapter
 import com.example.stockinsight.ui.viewmodel.StockViewModel
 import com.example.stockinsight.ui.viewmodel.UserViewModel
 import com.example.stockinsight.utils.UiState
+import com.example.stockinsight.utils.getRandomItemsFromFile
 import com.example.stockinsight.utils.isNetworkAvailable
 import com.example.stockinsight.utils.showDialog
 import com.example.stockinsight.utils.startStockPriceService
@@ -36,6 +37,16 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            stockViewModel.getListQuotesForHomePage(
+                getRandomItemsFromFile(
+                    requireContext(), R.raw.list_symbols, 10
+                ), "1d"
+            )
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
     }
 
@@ -45,21 +56,11 @@ class HomeFragment : Fragment() {
         if (isNetworkAvailable(requireContext())) {
             userViewModel.fetchUser()
 
-            // Request stock data
-            val symbols = listOf(
-                "VNM",
-                "^DJI",
-                "AAPL",
-                "SBUX",
-                "NKE",
-                "GOOG",
-                "^FTSE",
-                "^GDAXI",
-                "^HSI",
-                "^N225",
-                "^GSPC"
+            stockViewModel.getListQuotesForHomePage(
+                getRandomItemsFromFile(
+                    requireContext(), R.raw.list_symbols, 10
+                ), "1d"
             )
-            stockViewModel.getListQuotesForHomePage(symbols, "1d")
 
             binding.searchEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -81,8 +82,8 @@ class HomeFragment : Fragment() {
                             binding.root.findNavController().navigate(action)
                         })
                         binding.recyclerSearchResults.apply {
-                            setLayoutManager(LinearLayoutManager(requireContext()))
-                            setAdapter(searchResultAdapter)
+                            layoutManager = LinearLayoutManager(requireContext())
+                            adapter = searchResultAdapter
                         }
                         stockViewModel.searchStocksByKeyword(s.toString(), "1d")
                         stockViewModel.searchResult.observe(viewLifecycleOwner) {
@@ -103,7 +104,6 @@ class HomeFragment : Fragment() {
 
                                 is UiState.Failure -> {
                                     stockViewModel.searchStocksByKeyword(s.toString(), "5d")
-//                                    showDialog(it.message, "error", requireContext())
                                 }
                             }
                         }
@@ -124,6 +124,7 @@ class HomeFragment : Fragment() {
         } else {
             showDialog(getString(R.string.no_internet_connection), "error", requireContext())
         }
+
     }
 
     private fun setupRecyclerView() {
@@ -134,7 +135,7 @@ class HomeFragment : Fragment() {
         })
 
         binding.recyclerStock.apply {
-            setLayoutManager(LinearLayoutManager(requireContext()))
+            setLayoutManager(LinearLayoutManager(this@HomeFragment.requireContext()))
             setAdapter(multiQuoteForHomePageAdapter)
         }
     }

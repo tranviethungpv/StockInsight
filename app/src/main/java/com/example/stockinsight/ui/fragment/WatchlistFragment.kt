@@ -44,19 +44,29 @@ class WatchlistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentWatchlistBinding.inflate(inflater, container, false)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            if (isNetworkAvailable(this.requireContext())) {
+                stockViewModel.getListQuotesForWatchlist(sessionManager.getUserId())
+            } else {
+                showDialog(getString(R.string.no_internet_connection), "error", this.requireContext())
+            }
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (isNetworkAvailable(requireContext())) {
+        if (isNetworkAvailable(this.requireContext())) {
             stockViewModel.getListQuotesForWatchlist(sessionManager.getUserId())
 
             setupRecyclerView()
             observer()
         } else {
-            showDialog(getString(R.string.no_internet_connection), "error", requireContext())
+            showDialog(getString(R.string.no_internet_connection), "error", this.requireContext())
         }
     }
 
@@ -66,12 +76,12 @@ class WatchlistFragment : Fragment() {
                 WatchlistFragmentDirections.actionWatchlistFragmentToStockDetailFragment(it.quoteInfo.symbol)
             binding.root.findNavController().navigate(action)
         }, onItemLongClick = { stockInfo, view ->
-            val popupMenu = PopupMenu(requireContext(), view)
+            val popupMenu = PopupMenu(this.requireContext(), view)
             popupMenu.menuInflater.inflate(R.menu.watchlist_context_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.set_notification -> {
-                        val dialog = Dialog(requireContext())
+                        val dialog = Dialog(this.requireContext())
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                         dialog.setContentView(R.layout.dialog_set_threshold)
 
@@ -101,7 +111,7 @@ class WatchlistFragment : Fragment() {
                                 showDialog(
                                     getString(R.string.please_enter_a_valid_number_for_the_threshold),
                                     "error",
-                                    requireContext()
+                                    this.requireContext()
                                 )
                             }
                         }
@@ -111,7 +121,8 @@ class WatchlistFragment : Fragment() {
                     }
 
                     R.id.delete -> {
-                        AlertDialog.Builder(requireContext()).setTitle(getString(R.string.delete_watchlist))
+                        AlertDialog.Builder(this.requireContext())
+                            .setTitle(getString(R.string.delete_watchlist))
                             .setMessage(getString(R.string.delete_watchlist_message))
                             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                                 stockViewModel.removeStockFromWatchlist(
@@ -130,7 +141,7 @@ class WatchlistFragment : Fragment() {
         })
 
         binding.recyclerWatchlist.apply {
-            setLayoutManager(LinearLayoutManager(requireContext()))
+            setLayoutManager(LinearLayoutManager(this@WatchlistFragment.requireContext()))
             setAdapter(watchListAdapter)
         }
     }
@@ -139,26 +150,29 @@ class WatchlistFragment : Fragment() {
         stockViewModel.watchlist.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    binding.recyclerWatchlist.addVeiledItems(5)
-                    binding.recyclerWatchlist.veil()
+                    binding.recyclerWatchlist.visibility = View.GONE
+                    binding.txtWatchlistDataStatus.visibility = View.GONE
+                    binding.progressBarWatchlist.visibility = View.VISIBLE
                 }
 
                 is UiState.Success -> {
                     if (state.data.isEmpty()) {
                         Log.d("WatchlistFragment", "Data: ${state.data.size}")
-                        binding.linearWatchlistDataStatus.visibility = View.VISIBLE
+                        binding.txtWatchlistDataStatus.visibility = View.VISIBLE
                         binding.recyclerWatchlist.visibility = View.GONE
                     } else {
-                        binding.linearWatchlistDataStatus.visibility = View.GONE
+                        binding.txtWatchlistDataStatus.visibility = View.GONE
                         binding.recyclerWatchlist.visibility = View.VISIBLE
                     }
                     watchListAdapter.updateList(state.data)
-                    binding.recyclerWatchlist.unVeil()
+                    binding.progressBarWatchlist.visibility = View.GONE
                 }
 
                 is UiState.Failure -> {
-                    showDialog(state.message, "error", requireContext())
-                    binding.recyclerWatchlist.unVeil()
+                    binding.recyclerWatchlist.visibility = View.GONE
+                    binding.progressBarWatchlist.visibility = View.GONE
+                    binding.txtWatchlistDataStatus.visibility = View.VISIBLE
+                    showDialog(state.message, "error", this.requireContext())
                 }
             }
         }
@@ -166,23 +180,23 @@ class WatchlistFragment : Fragment() {
         stockViewModel.removeStockResult.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    binding.recyclerWatchlist.veil()
+                    binding.progressBarWatchlist.visibility = View.VISIBLE
                 }
 
                 is UiState.Success -> {
                     showDialog(
                         getString(R.string.removed_from_watchlist_successfully),
                         "success",
-                        requireContext()
+                        this.requireContext()
                     )
+                    binding.progressBarWatchlist.visibility = View.GONE
                     stockViewModel.getListQuotesForWatchlist(sessionManager.getUserId())
-                    startStockPriceService(requireContext())
-                    binding.recyclerWatchlist.unVeil()
+                    startStockPriceService(this.requireContext())
                 }
 
                 is UiState.Failure -> {
-                    showDialog(state.message, "error", requireContext())
-                    binding.recyclerWatchlist.unVeil()
+                    showDialog(state.message, "error", this.requireContext())
+                    binding.progressBarWatchlist.visibility = View.GONE
                 }
             }
         }
@@ -196,13 +210,13 @@ class WatchlistFragment : Fragment() {
                     showDialog(
                         getString(R.string.threshold_updated_successfully),
                         "success",
-                        requireContext()
+                        this.requireContext()
                     )
-                    startStockPriceService(requireContext())
+                    startStockPriceService(this.requireContext())
                 }
 
                 is UiState.Failure -> {
-                    showDialog(state.message, "error", requireContext())
+                    showDialog(state.message, "error", this.requireContext())
                 }
             }
         }

@@ -8,228 +8,218 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.HomeFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/layoutContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ScrollViewCount">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutConstrainContent"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5pxv"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                app:contentInsetStart="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <LinearLayout
-                    android:id="@+id/linearRowmemojiboysfortyone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:id="@+id/linearAvatar"-->
-                    <!--                        android:layout_width="@dimen/_48pxh"-->
-                    <!--                        android:layout_height="@dimen/_48pxh"-->
-                    <!--                        android:gravity="center_horizontal"-->
-                    <!--                        android:orientation="vertical">-->
-
-                    <!--                        <de.hdodenhof.circleimageview.CircleImageView-->
-                    <!--                            android:id="@+id/imageMemojiBoysFortyOne"-->
-                    <!--                            android:layout_width="match_parent"-->
-                    <!--                            android:layout_height="match_parent"-->
-                    <!--                            android:src="@drawable/user_anonymous"-->
-                    <!--                            tools:ignore="ContentDescription" />-->
-                    <!--                    </LinearLayout>-->
-
-                    <LinearLayout
-                        android:id="@+id/linearWelcome"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_15pxh"
-                        android:layout_marginTop="@dimen/_1pxv"
-                        android:layout_marginBottom="@dimen/_1pxv"
-                        android:gravity="start"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/linearHello"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/txtHiKitsbase"
-                                style="@style/txtEudoxusSansbold18"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/_3pxh"
-                                android:ellipsize="end"
-                                android:lineSpacingExtra="@dimen/_5pxh"
-                                android:singleLine="true"
-                                android:text="@string/lbl_hi_kitsbase"
-                                tools:text="@string/lbl_hi_kitsbase" />
-
-                            <TextView
-                                android:id="@+id/txtUsername"
-                                style="@style/txtEudoxusSansbold18"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/_10pxh"
-                                android:ellipsize="end"
-                                android:lineSpacingExtra="@dimen/_5pxh"
-                                android:singleLine="true"
-                                android:text="@string/lbl_username"
-                                tools:text="@string/lbl_username" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/txtWelcometoTrad"
-                            style="@style/txtEudoxusSansregular14"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_4pxv"
-                            android:ellipsize="end"
-                            android:lineSpacingExtra="@dimen/_4pxh"
-                            android:singleLine="true"
-                            android:text="@string/msg_welcome_to_trad"
-                            tools:text="@string/msg_welcome_to_trad" />
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:fillViewport="true"
+            tools:ignore="ScrollViewCount">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layoutSearch"
+                android:id="@+id/layoutConstrainContent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbarToolbar">
+                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/search_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/search_background"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="10dp"
-                    android:hint="@string/search_here"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="20dp"
-                    android:textColor="@color/search_bar_text"
-                    android:textColorHint="@color/search_bar_hint"
-                    android:textSize="16sp"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5pxv"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="30dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/linearRowmemojiboysfortyone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/linearWelcome"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_15pxh"
+                            android:layout_marginTop="@dimen/_1pxv"
+                            android:layout_marginBottom="@dimen/_1pxv"
+                            android:gravity="start"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/linearHello"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/txtHiKitsbase"
+                                    style="@style/txtEudoxusSansbold18"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_3pxh"
+                                    android:ellipsize="end"
+                                    android:lineSpacingExtra="@dimen/_5pxh"
+                                    android:singleLine="true"
+                                    android:text="@string/lbl_hi_kitsbase"
+                                    tools:text="@string/lbl_hi_kitsbase" />
+
+                                <TextView
+                                    android:id="@+id/txtUsername"
+                                    style="@style/txtEudoxusSansbold18"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_10pxh"
+                                    android:ellipsize="end"
+                                    android:lineSpacingExtra="@dimen/_5pxh"
+                                    android:singleLine="true"
+                                    android:text="@string/lbl_username"
+                                    tools:text="@string/lbl_username" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/txtWelcometoTrad"
+                                style="@style/txtEudoxusSansregular14"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4pxv"
+                                android:ellipsize="end"
+                                android:lineSpacingExtra="@dimen/_4pxh"
+                                android:singleLine="true"
+                                android:text="@string/msg_welcome_to_trad"
+                                tools:text="@string/msg_welcome_to_trad" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.appcompat.widget.Toolbar>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbarToolbar">
+
+                    <EditText
+                        android:id="@+id/search_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/search_background"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="10dp"
+                        android:hint="@string/search_here"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="20dp"
+                        android:textColor="@color/search_bar_text"
+                        android:textColorHint="@color/search_bar_hint"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressSearchResults"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ProgressBar
-                android:id="@+id/progressSearchResults"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtNoResults"
-                style="@style/txtEudoxusSansregular14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lbl_no_results"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/linearTitleStock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="start"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutSearch">
 
                 <TextView
-                    android:id="@+id/txtStocks"
-                    style="@style/txtEudoxusSansbold18"
-                    android:layout_width="0dp"
+                    android:id="@+id/txtNoResults"
+                    style="@style/txtEudoxusSansregular14"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:text="@string/lbl_no_results"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/linearTitleStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
                     android:gravity="start"
-                    android:lineSpacingExtra="@dimen/_5pxh"
-                    android:text="@string/lbl_stocks"
-                    android:textSize="@dimen/_22pxh"
-                    tools:ignore="SpUsage" />
-            </LinearLayout>
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutSearch">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerSearchResults"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearTitleStock" />
+                    <TextView
+                        android:id="@+id/txtStocks"
+                        style="@style/txtEudoxusSansbold18"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:lineSpacingExtra="@dimen/_5pxh"
+                        android:text="@string/lbl_stocks"
+                        android:textSize="@dimen/_22pxh"
+                        tools:ignore="SpUsage" />
+                </LinearLayout>
 
-            <com.skydoves.androidveil.VeilRecyclerFrameView
-                android:id="@+id/recyclerStock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearTitleStock"
-                app:veilFrame_baseAlpha="0.6"
-                app:veilFrame_baseColor="@android:color/darker_gray"
-                app:veilFrame_highlightAlpha="1.0"
-                app:veilFrame_highlightColor="@android:color/white"
-                app:veilFrame_isItemWrapContentHeight="true"
-                app:veilFrame_isItemWrapContentWidth="false"
-                app:veilFrame_layout="@layout/item_home_page_stock"
-                app:veilFrame_radius="8dp"
-                app:veilFrame_shimmerEnable="true"
-                app:veilFrame_veiled="true" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSearchResults"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearTitleStock" />
+
+                <com.skydoves.androidveil.VeilRecyclerFrameView
+                    android:id="@+id/recyclerStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearTitleStock"
+                    app:veilFrame_baseAlpha="0.6"
+                    app:veilFrame_baseColor="@android:color/darker_gray"
+                    app:veilFrame_highlightAlpha="1.0"
+                    app:veilFrame_highlightColor="@android:color/white"
+                    app:veilFrame_isItemWrapContentHeight="true"
+                    app:veilFrame_isItemWrapContentWidth="false"
+                    app:veilFrame_layout="@layout/item_home_page_stock"
+                    app:veilFrame_radius="8dp"
+                    app:veilFrame_shimmerEnable="true"
+                    app:veilFrame_veiled="true" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

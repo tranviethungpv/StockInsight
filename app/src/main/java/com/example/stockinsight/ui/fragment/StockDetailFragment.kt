@@ -170,64 +170,71 @@ class StockDetailFragment : BottomSheetDialogFragment() {
                 }
 
                 is UiState.Success -> {
-                    binding.tvSymbol.text = state.data.quoteInfo.symbol
-                    binding.tvCompanyName.text = state.data.quoteInfo.shortName
+                    val quoteInfo = state.data.quoteInfo
+                    val historicData = state.data.historicData
 
-                    binding.tvPrice.text =
-                        formatValue(state.data.quoteInfo.currentPrice, state.data.quoteInfo.today)
-                    binding.txtTwentyThreeOne.text = formatValue(state.data.quoteInfo.diff)
+                    // Check if quoteInfo and historicData are not null before accessing their properties
+                    if (quoteInfo != null && historicData != null) {
+                        binding.tvSymbol.text = quoteInfo.symbol ?: ""
+                        binding.tvCompanyName.text = quoteInfo.shortName ?: ""
 
-                    if (state.data.quoteInfo.diff > 0) {
-                        binding.txtTwentyThreeOne.setTextColor(
-                            requireContext().resources.getColor(R.color.light_green_500)
-                        )
-                        binding.imageSettings.setImageResource(R.drawable.img_arrowup_light_green_500)
-                    } else {
-                        binding.txtTwentyThreeOne.setTextColor(
-                            requireContext().resources.getColor(R.color.red_700)
-                        )
-                        binding.imageSettings.setImageResource(R.drawable.img_settings_deep_orange_a200)
-                    }
+                        binding.tvPrice.text = formatValue(quoteInfo.currentPrice, quoteInfo.today)
+                        binding.txtTwentyThreeOne.text = formatValue(quoteInfo.diff)
 
-                    binding.tvOpenValue.text = formatValue(state.data.quoteInfo.open)
-                    binding.tvHighValue.text = formatValue(state.data.quoteInfo.dayHigh)
-                    binding.tvLowValue.text = formatValue(state.data.quoteInfo.dayLow)
-                    binding.tvVolumeValue.text = formatNumber(state.data.quoteInfo.volume)
-                    binding.tvRatioValue.text = formatValue(state.data.quoteInfo.trailingPE)
-                    binding.tvMarketCapValue.text = formatNumber(state.data.quoteInfo.marketCap)
-                    binding.tv52WeekHighValue.text =
-                        formatValue(state.data.quoteInfo.fiftyTwoWeekHigh)
-                    binding.tv52WeekLowValue.text =
-                        formatValue(state.data.quoteInfo.fiftyTwoWeekLow)
-                    binding.tvAverageVolumeValue.text =
-                        formatNumber(state.data.quoteInfo.averageVolume)
-
-                    val dividendYield =
-                        if (state.data.quoteInfo.dividendYield != 0.0) state.data.quoteInfo.dividendYield else state.data.quoteInfo.yield
-                    binding.tvYieldValue.text = formatPercentage(dividendYield)
-
-                    val beta =
-                        if (state.data.quoteInfo.beta != 0.0) state.data.quoteInfo.beta else state.data.quoteInfo.beta3Year
-                    binding.tvBetaValue.text = formatValue(beta)
-                    binding.tvEarningsPerShareValue.text =
-                        formatValue(state.data.quoteInfo.trailingEps)
-
-                    val chartData = state.data.historicData.close
-
-                    val entries = mutableListOf<Entry>()
-                    chartData.let { closeData ->
-                        for ((timestamp, value) in closeData) {
-                            value?.toFloat()?.let { Entry(timestamp.toFloat(), it) }
-                                ?.let { entries.add(it) }
+                        if (quoteInfo.diff > 0) {
+                            binding.txtTwentyThreeOne.setTextColor(
+                                requireContext().resources.getColor(R.color.light_green_500)
+                            )
+                            binding.imageSettings.setImageResource(R.drawable.img_arrowup_light_green_500)
+                        } else {
+                            binding.txtTwentyThreeOne.setTextColor(
+                                requireContext().resources.getColor(R.color.red_700)
+                            )
+                            binding.imageSettings.setImageResource(R.drawable.img_settings_deep_orange_a200)
                         }
-                    }
-                    if (state.data.quoteInfo.diff > 0) {
-                        drawFullLineChart(binding.imageChart, entries, "up", chartMode)
+
+                        binding.tvOpenValue.text = formatValue(quoteInfo.open)
+                        binding.tvHighValue.text = formatValue(quoteInfo.dayHigh)
+                        binding.tvLowValue.text = formatValue(quoteInfo.dayLow)
+                        binding.tvVolumeValue.text = formatNumber(quoteInfo.volume)
+                        binding.tvRatioValue.text = formatValue(quoteInfo.trailingPE)
+                        binding.tvMarketCapValue.text = formatNumber(quoteInfo.marketCap)
+                        binding.tv52WeekHighValue.text = formatValue(quoteInfo.fiftyTwoWeekHigh)
+                        binding.tv52WeekLowValue.text = formatValue(quoteInfo.fiftyTwoWeekLow)
+                        binding.tvAverageVolumeValue.text = formatNumber(quoteInfo.averageVolume)
+
+                        val dividendYield =
+                            if (quoteInfo.dividendYield != 0.0) quoteInfo.dividendYield else quoteInfo.yield
+                        binding.tvYieldValue.text = formatPercentage(dividendYield)
+
+                        val beta =
+                            if (quoteInfo.beta != 0.0) quoteInfo.beta else quoteInfo.beta3Year
+                        binding.tvBetaValue.text = formatValue(beta)
+                        binding.tvEarningsPerShareValue.text = formatValue(quoteInfo.trailingEps)
+
+                        val chartData = historicData.close
+
+                        val entries = mutableListOf<Entry>()
+                        chartData?.let { closeData ->
+                            for ((timestamp, value) in closeData) {
+                                value?.toFloat()?.let { Entry(timestamp.toFloat(), it) }
+                                    ?.let { entries.add(it) }
+                            }
+                        }
+
+                        if (quoteInfo.diff > 0) {
+                            drawFullLineChart(binding.imageChart, entries, "up", chartMode)
+                        } else {
+                            drawFullLineChart(binding.imageChart, entries, "down", chartMode)
+                        }
+                        unVeil()
                     } else {
-                        // if the stock price is down, draw the line chart in red
-                        drawFullLineChart(binding.imageChart, entries, "down", chartMode)
+                        // Handle the case where quoteInfo or historicData is null
+                        showDialog(
+                            getString(R.string.error_parsing_data), "error", requireContext()
+                        )
+                        unVeil()
                     }
-                    unVeil()
                 }
 
                 is UiState.Failure -> {

@@ -9,6 +9,7 @@ import com.example.stockinsight.data.socket.SocketManager
 import com.example.stockinsight.utils.UiState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -91,9 +92,14 @@ class StockImpl @Inject constructor(
                 if (!isResumed) {
                     isResumed = true
                     if (args.isNotEmpty()) {
-                        val stockDataFromServer =
-                            Gson().fromJson(args[0].toString(), FullStockInfo::class.java)
-                        continuation.resume(UiState.Success(stockDataFromServer))
+                        try {
+                            val stockDataFromServer =
+                                Gson().fromJson(args[0].toString(), FullStockInfo::class.java)
+                            continuation.resume(UiState.Success(stockDataFromServer))
+                        } catch (e: JsonSyntaxException) {
+                            Log.e("StockImpl", "Json parsing error: ${e.localizedMessage}")
+                            continuation.resume(UiState.Failure(context.getString(R.string.error_parsing_data)))
+                        }
                     } else {
                         continuation.resume(UiState.Failure(context.getString(R.string.no_data_received_from_server)))
                     }
@@ -209,11 +215,30 @@ class StockImpl @Inject constructor(
         socketManager.emit(socketName, requestEvent, data)
 
         socketManager.on(socketName, updateEvent) { args ->
-            val type = object : TypeToken<List<FullStockInfo>>() {}.type
-            val stockDataListFromServer =
-                Gson().fromJson<List<FullStockInfo>>(args[0].toString(), type)
-            Log.d("StockImpl", "Stock data: ${stockDataListFromServer.size}")
-            result(UiState.Success(ArrayList(stockDataListFromServer)))
+            if (args.isNotEmpty()) {
+                try {
+                    val jsonArray = JsonParser.parseString(args[0].toString()).asJsonArray
+                    val stockDataListFromServer = mutableListOf<FullStockInfo>()
+
+                    for (jsonElement in jsonArray) {
+                        try {
+                            val stockInfo = Gson().fromJson(jsonElement, FullStockInfo::class.java)
+                            stockDataListFromServer.add(stockInfo)
+                        } catch (e: JsonSyntaxException) {
+                            Log.e("StockImpl", "Json parsing error for item: ${e.localizedMessage}")
+                            // Skip invalid JSON elements
+                        }
+                    }
+
+                    Log.d("StockImpl", "Fetched data: ${stockDataListFromServer.size}")
+                    result(UiState.Success(ArrayList(stockDataListFromServer)))
+                } catch (e: Exception) {
+                    Log.e("StockImpl", "Error parsing data: ${e.localizedMessage}")
+                    result(UiState.Failure(context.getString(R.string.error_parsing_data)))
+                }
+            } else {
+                result(UiState.Failure(context.getString(R.string.no_data_received_from_server)))
+            }
         }
     }
 

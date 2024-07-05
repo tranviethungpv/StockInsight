@@ -55,9 +55,11 @@ class StockDetailFragment : BottomSheetDialogFragment() {
         veil()
         binding.rgChartMode.check(R.id.ro_1d)
         stockViewModel.getStockInfoBySymbol(stockSymbol, "1d")
-        userViewModel.checkSymbolInWatchlist(
-            session.getUserId() ?: getString(R.string.blank), stockSymbol
-        )
+        if(session.isLoggedIn()) {
+            userViewModel.checkSymbolInWatchlist(
+                session.getUserId() ?: getString(R.string.blank), stockSymbol
+            )
+        }
 
         observerStockInfo()
         observerIsSymbolInWatchlist()
@@ -67,19 +69,28 @@ class StockDetailFragment : BottomSheetDialogFragment() {
         }
 
         binding.ivFavorite.setOnClickListener {
-            session.getUserId()?.let { userId ->
-                if (isInWatchlist) {
-                    stockViewModel.removeStockFromWatchlist(userId, stockSymbol)
-                } else {
-                    // Assuming you have some predefined values for threshold and lastNotifiedPrice
-                    val threshold = 0.0  // Example threshold value
-                    val lastNotifiedPrice = 0.0  // Example initial value for last notified price
+            if (session.isLoggedIn()) {
+                session.getUserId()?.let { userId ->
+                    if (isInWatchlist) {
+                        stockViewModel.removeStockFromWatchlist(userId, stockSymbol)
+                    } else {
+                        // Assuming you have some predefined values for threshold and lastNotifiedPrice
+                        val threshold = 0.0  // Example threshold value
+                        val lastNotifiedPrice =
+                            0.0  // Example initial value for last notified price
 
-                    // If these values come from user input, you can fetch them from the respective UI elements
-                    stockViewModel.addStockToWatchlist(
-                        userId, stockSymbol, threshold, lastNotifiedPrice
-                    )
+                        // If these values come from user input, you can fetch them from the respective UI elements
+                        stockViewModel.addStockToWatchlist(
+                            userId, stockSymbol, threshold, lastNotifiedPrice
+                        )
+                    }
                 }
+            } else {
+                showDialog(
+                    getString(R.string.please_login_to_add_to_watchlist),
+                    "warning",
+                    requireContext()
+                )
             }
         }
 

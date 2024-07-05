@@ -85,9 +85,7 @@
                                     android:layout_marginEnd="@dimen/_10pxh"
                                     android:ellipsize="end"
                                     android:lineSpacingExtra="@dimen/_5pxh"
-                                    android:singleLine="true"
-                                    android:text="@string/lbl_username"
-                                    tools:text="@string/lbl_username" />
+                                    android:singleLine="true" />
                             </LinearLayout>
 
                             <TextView

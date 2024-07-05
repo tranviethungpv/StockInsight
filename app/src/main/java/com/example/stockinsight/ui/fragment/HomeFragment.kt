@@ -17,12 +17,14 @@ import com.example.stockinsight.ui.adapter.MultiQuoteForHomePageAdapter
 import com.example.stockinsight.ui.adapter.SearchResultAdapter
 import com.example.stockinsight.ui.viewmodel.StockViewModel
 import com.example.stockinsight.ui.viewmodel.UserViewModel
+import com.example.stockinsight.utils.SessionManager
 import com.example.stockinsight.utils.UiState
 import com.example.stockinsight.utils.getRandomItemsFromFile
 import com.example.stockinsight.utils.isNetworkAvailable
 import com.example.stockinsight.utils.showDialog
 import com.example.stockinsight.utils.startStockPriceService
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -32,6 +34,9 @@ class HomeFragment : Fragment() {
     private val stockViewModel: StockViewModel by viewModels()
     private lateinit var multiQuoteForHomePageAdapter: MultiQuoteForHomePageAdapter
     private lateinit var searchResultAdapter: SearchResultAdapter
+
+    @Inject
+    lateinit var session: SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -54,6 +59,13 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (isNetworkAvailable(requireContext())) {
+            if (session.isLoggedIn() == false) {
+                binding.txtHiKitsbase.text = getString(R.string.you_are_not_logged_in)
+                binding.txtHiKitsbase.setOnClickListener {
+                    binding.root.findNavController().navigate(R.id.action_homeFragment_to_onboardingFragment)
+                }
+            }
+
             userViewModel.fetchUser()
 
             stockViewModel.getListQuotesForHomePage(

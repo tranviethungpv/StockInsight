@@ -160,4 +160,6 @@
     <string name="japanese">Tiếng Nhật</string>
     <string name="korean">Tiếng Hàn</string>
     <string name="chinese">Tiếng Trung</string>
+    <string name="please_login_to_add_to_watchlist">Vui lòng đăng nhập để thêm vào danh sách theo dõi</string>
+    <string name="you_are_not_logged_in">Bạn chưa đăng nhập, đăng nhập tại đây</string>
 </resources>

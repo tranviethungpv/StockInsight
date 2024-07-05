@@ -69,7 +69,7 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="10dp"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_heart_flat" />
+            android:src="@drawable/ic_heart_thin" />
 
         <ImageView
             android:id="@+id/iv_close"

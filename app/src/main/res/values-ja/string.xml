@@ -159,4 +159,6 @@
     <string name="japanese">日本語</string>
     <string name="korean">韓国語</string>
     <string name="chinese">中国語</string>
+    <string name="please_login_to_add_to_watchlist">ウォッチリストに追加するにはログインしてください</string>
+    <string name="you_are_not_logged_in">ログインしていません。ここからログインしてください</string>
 </resources>

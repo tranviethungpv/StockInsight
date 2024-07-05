@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,9 +65,21 @@ class AccountFragment : BottomSheetDialogFragment() {
             AlertDialog.Builder(requireContext()).setTitle(getString(R.string.logout))
                 .setMessage(getString(R.string.logout_message))
                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    userViewModel.signOut()
                     sessionManager.clearLoginSession()
-                    findNavController().navigate(R.id.action_accountFragment_to_onboardingFragment)
-                    dismiss()
+
+                    // Verify that the session is cleared
+                    if (!sessionManager.isLoggedIn()) {
+                        Log.d("Logout", "Session cleared successfully")
+                    } else {
+                        Log.d("Logout", "Failed to clear session")
+                    }
+
+                    // Navigate to home fragment only if session is cleared
+                    if (!sessionManager.isLoggedIn()) {
+                        findNavController().navigate(R.id.action_accountFragment_to_homeFragment)
+                        dismiss()
+                    }
                 }.setNegativeButton(getString(R.string.no), null).show()
         }
 

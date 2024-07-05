@@ -160,4 +160,6 @@
     <string name="japanese">Japanese</string>
     <string name="korean">Korean</string>
     <string name="chinese">Chinese</string>
+    <string name="please_login_to_add_to_watchlist">Please login to add to watchlist</string>
+    <string name="you_are_not_logged_in">You are not logged in, log in here</string>
 </resources>

@@ -71,4 +71,8 @@ class UserViewModel @Inject constructor(
             _changePassword.postValue(result)
         }
     }
+
+    fun signOut() {
+        auth.signOut()
+    }
 }

@@ -35,7 +35,7 @@ class SessionManager @Inject constructor(context: Context) {
 
     fun clearLoginSession() {
         val editor = sharedPreferences.edit()
-        editor.putBoolean(IS_LOGGED_IN, false)
+        editor.clear()
         editor.apply()
     }
 

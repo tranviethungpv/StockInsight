@@ -160,4 +160,6 @@
     <string name="japanese">日语</string>
     <string name="korean">韩语</string>
     <string name="chinese">中文</string>
+    <string name="please_login_to_add_to_watchlist">请登录以添加到监视列表</string>
+    <string name="you_are_not_logged_in">您尚未登录，请点击此处登录</string>
 </resources>

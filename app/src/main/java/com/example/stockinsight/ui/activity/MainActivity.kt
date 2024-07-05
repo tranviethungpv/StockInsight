@@ -53,12 +53,13 @@ class MainActivity : AppCompatActivity() {
         menu.findItem(R.id.user).title = getString(R.string.lbl_settings)
 
         if (sessionManager.isLoggedIn()) {
-            navController.navigate(R.id.homeFragment)
             bottomNavigationViewLayout.visibility = View.VISIBLE
         } else {
             bottomNavigationViewLayout.visibility = View.GONE
-            navController.navigate(R.id.onboardingFragment)
+//            navController.navigate(R.id.onboardingFragment)
         }
+
+        navController.navigate(R.id.homeFragment)
 
         // Initialize currentOrder with the order of the start destination
         var currentOrder = 1
